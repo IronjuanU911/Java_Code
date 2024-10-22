@@ -2,8 +2,9 @@
 Un juego RPG
 */
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 class Warrior{
     String name;
@@ -17,6 +18,8 @@ class Warrior{
 
 public class RPG_Game {
     static Scanner sc = new Scanner(System.in);
+    static Timer timer = new Timer();
+
     static Warrior hero = new Warrior();
     static Warrior villan = new Warrior();
     static short dificulty;
@@ -46,16 +49,46 @@ public class RPG_Game {
 
         dificulty = sc.nextShort();
 
-        System.out.println(hero.name + ", as sido traido aqui para acabar con Falcon");
-        enter_to_continue(true);
+        System.out.println("Cargando...");
+        await(1000);
+        limpiar_consola();
+        System.out.println("Es un dia muy oscuro, de seguro estas muy confundido");
+        await(2500);
+        System.out.println(hero.name + ", has sido traido aqui para acabar con Falcon");
+        await(2500);
+        enter_to_continue();
+
+        game();
+        sc.nextLine();
     }
 
+    public static void game(){
+        limpiar_consola();
 
-    public static void enter_to_continue(boolean is_visible_text){
-        if (is_visible_text){
-            System.out.print("[Presiona enter para continuar]");
-        }
-        String x = sc.nextLine();
+        System.out.println(
+                   "//" + 
+            '\n' + "//" + 
+            '\n' + "//" + 
+            '\n' + "//" + 
+            '\n' + "//" + 
+            '\n' + "//" + 
+            '\n' + "//" + 
+            '\n' + "//" + 
+            '\n' + "//" + 
+            '\n' + "//" + 
+            '\n' + "//" + 
+            '\n' + "//" + 
+            '\n' + "[Ataque : 1][Defensa : 2][Estadisticas : 3][Piedad : 4]"
+        );
+    }
+    
+
+
+    public static void enter_to_continue(){
+        Scanner sc_temp = new Scanner(System.in);
+        System.out.println("[Presiona enter para continuar]");
+        sc_temp.nextLine();
+        //Fin función
     }
 
     public static void limpiar_consola()  {
@@ -66,4 +99,15 @@ public class RPG_Game {
         }
         //Fin función
     }
+
+    public static void await(int time){
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //Fin función
+    }
+
+
 }
