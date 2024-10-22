@@ -34,25 +34,17 @@ public class RPG_Game {
     public static void start(){
         limpiar_consola();
 
-        try {
-            System.out.println("Inserta tu nombre");
-            hero.name = sc.nextLine();
+        System.out.println("Inserta tu nombre");
+        hero.name = sc.nextLine();
             
-        } catch (InputMismatchException ex){}
-        
-        try {
-            limpiar_consola();
-            System.out.println("Inserta el nivel de dificultad " + '\n' + 
-            "Facil [1]" + '\n' + 
-            "Medio [2]" + '\n' + 
-            "Difisil [3]" + '\n');
+    
+        limpiar_consola();
+        System.out.println("Inserta el nivel de dificultad " + '\n' + 
+        "Facil [1]" + '\n' + 
+        "Medio [2]" + '\n' + 
+        "Dificil [3]" + '\n');
 
-            dificulty = sc.nextShort();
-
-        } catch (InputMismatchException ex){
-            System.out.println("Inserte un valor esperado");
-            enter_to_continue(false);
-        }
+        dificulty = sc.nextShort();
 
         System.out.println(hero.name + ", as sido traido aqui para acabar con Falcon");
         enter_to_continue(true);
