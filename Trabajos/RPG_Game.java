@@ -6,9 +6,14 @@ import java.util.Scanner;
 
 class Warrior{
     String name;
-    float healt;
-    float resistance;
-    float force;
+
+    float base_healt;
+    float base_resistance;
+    float base_force;
+
+    float healt = 200;
+    float resistance = 10;
+    float force = 10;
     boolean is_alive = true;
 
     Warrior focused;
@@ -37,13 +42,20 @@ public class RPG_Game {
 
     static Warrior hero = new Warrior();
     static Warrior villan = new Warrior();
-    static short dificulty;
+    static short difficulty;
+    static final float difficulty_index = 0.2f;
+    static float index_villan_upgrade;
 
     public static void main (String[] args) {
         //Inicio algoritmo
         
         while (true){
             start();
+
+            game();
+
+
+
         }
 
         //Fin algoritmo
@@ -64,9 +76,10 @@ public class RPG_Game {
             "Medio [2]" + '\n' + 
             "Dificil [3]" + '\n');
 
-            dificulty = sc.nextShort();
+            difficulty = sc.nextShort();
 
-            if (dificulty > 0 && dificulty < 4){
+            if (difficulty > 0 && difficulty < 4){
+                set_index_villan_difficulty();
                 break;
             } else {
                 clean_terminal();
@@ -87,30 +100,74 @@ public class RPG_Game {
         await(2500);
         enter_to_continue(true);
 
-        game("Prueba","Del motor","De texto");
-        sc.nextLine();
     }
 
-    public static void game(String text_1, String text_2, String text_3){
+    public static void output(String text_1, String text_2, String text_3){
         clean_terminal();
 
         System.out.println(
-                   "//" + text_1 + 
-            '\n' + "//" + 
-            '\n' + "//" + text_2 +
-            '\n' + "//" + 
-            '\n' + "//" + text_3 + 
-            '\n' + "//" + 
-            '\n' + "//" + 
-            '\n' + "//" + 
-            '\n' + "//" + 
-            '\n' + "//" + 
-            '\n' + "//" + 
-            '\n' + "//" + 
-            '\n' + "[Ataque : 1][Defensa : 2][Estadisticas : 3][Piedad : 4]"
+                   "|" + text_1 + 
+            '\n' + "|" + 
+            '\n' + "|" + text_2 +
+            '\n' + "|" + 
+            '\n' + "|" + text_3 + 
+            '\n' + "|" + 
+            '\n' + "|" + 
+            '\n' + "|" + 
+            '\n' + "|" + 
+            '\n' + "|" + 
+            '\n' + "|" + 
+            '\n' + "|" + 
+            '\n' + "[Ataque : 1][Defensa : 2][Estadisticas : 3][Magia : 4]"
         );
     }
-    
+
+
+    public static void game(){
+        output("Esto iniciara","","");
+        sc.nextLine();
+
+    }
+
+// Funciones del fuego
+
+    public static void load_warriors(){
+        //Load_hero
+        hero.base_healt = hero.healt;
+        hero.base_resistance = hero.resistance;
+        hero.base_force = hero.force;
+
+
+        //Load_villan
+
+        villan.name = "Cronos";
+
+        
+        villan.base_healt = villan.healt*index_villan_upgrade;
+        villan.base_resistance = villan.resistance*index_villan_upgrade;
+        villan.base_force = villan.force*index_villan_upgrade;
+
+        villan.healt = villan.base_healt;
+        villan.resistance = villan.base_resistance;
+        villan.force = villan.base_force;
+
+    }
+
+    public static void set_index_villan_difficulty(){
+        switch (difficulty){
+            case 1:
+                index_villan_upgrade = (float)(1 - difficulty_index);
+                break;
+
+            case 2:
+                index_villan_upgrade = (1.0f);
+                break;
+
+            case 3:
+            index_villan_upgrade = (float)(1 + difficulty_index);
+        }
+                
+    }
 
 
     public static void enter_to_continue(boolean reset_Scanner){
@@ -121,6 +178,9 @@ public class RPG_Game {
         sc.nextLine();
         //Fin función
     }
+
+
+// Funciones del sistema
 
     public static void clean_terminal()  {
         try {
