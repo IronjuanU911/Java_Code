@@ -3,8 +3,6 @@ Un juego RPG
 */
 
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 
 class Warrior{
     String name;
@@ -13,12 +11,29 @@ class Warrior{
     float force;
     boolean is_alive = true;
 
+    Warrior focused;
+
+    public void is_attacked(){
+
+    }
+
+    public void attack(){
+        focused.is_attacked();
+    }
+
+    public void defend(){
+
+    }
+
+    public void to_heal(){
+
+    }
+
 }
 
 
 public class RPG_Game {
     static Scanner sc = new Scanner(System.in);
-    static Timer timer = new Timer();
 
     static Warrior hero = new Warrior();
     static Warrior villan = new Warrior();
@@ -35,42 +50,56 @@ public class RPG_Game {
     }
 
     public static void start(){
-        limpiar_consola();
+        clean_terminal();
 
         System.out.println("Inserta tu nombre");
         hero.name = sc.nextLine();
             
-    
-        limpiar_consola();
-        System.out.println("Inserta el nivel de dificultad " + '\n' + 
-        "Facil [1]" + '\n' + 
-        "Medio [2]" + '\n' + 
-        "Dificil [3]" + '\n');
+        clean_terminal();
 
-        dificulty = sc.nextShort();
+        while (true){
+            
+            System.out.println("Inserta el nivel de dificultad " + '\n' + 
+            "Facil [1]" + '\n' + 
+            "Medio [2]" + '\n' + 
+            "Dificil [3]" + '\n');
+
+            dificulty = sc.nextShort();
+
+            if (dificulty > 0 && dificulty < 4){
+                break;
+            } else {
+                clean_terminal();
+                System.out.println("ADVERTENCIA:[Inserte un valor dentro del rango]");
+            }
+        }
+
+
+        
+
 
         System.out.println("Cargando...");
         await(1000);
-        limpiar_consola();
+        clean_terminal();
         System.out.println("Es un dia muy oscuro, de seguro estas muy confundido");
         await(2500);
         System.out.println(hero.name + ", has sido traido aqui para acabar con Falcon");
         await(2500);
-        enter_to_continue();
+        enter_to_continue(true);
 
-        game();
+        game("Prueba","Del motor","De texto");
         sc.nextLine();
     }
 
-    public static void game(){
-        limpiar_consola();
+    public static void game(String text_1, String text_2, String text_3){
+        clean_terminal();
 
         System.out.println(
-                   "//" + 
+                   "//" + text_1 + 
             '\n' + "//" + 
+            '\n' + "//" + text_2 +
             '\n' + "//" + 
-            '\n' + "//" + 
-            '\n' + "//" + 
+            '\n' + "//" + text_3 + 
             '\n' + "//" + 
             '\n' + "//" + 
             '\n' + "//" + 
@@ -84,14 +113,16 @@ public class RPG_Game {
     
 
 
-    public static void enter_to_continue(){
-        Scanner sc_temp = new Scanner(System.in);
+    public static void enter_to_continue(boolean reset_Scanner){
+        if (reset_Scanner){
+            sc.nextLine();
+        }
         System.out.println("[Presiona enter para continuar]");
-        sc_temp.nextLine();
+        sc.nextLine();
         //Fin función
     }
 
-    public static void limpiar_consola()  {
+    public static void clean_terminal()  {
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (Exception e) {
