@@ -88,7 +88,7 @@ public class RPG_Game {
         }
 
 
-        
+        load_warriors();
 
 
         System.out.println("Cargando...");
@@ -98,12 +98,29 @@ public class RPG_Game {
         await(2500);
         System.out.println(hero.name + ", has sido traido aqui para acabar con Falcon");
         await(2500);
-        enter_to_continue(true);
+        enter_to_continue(true,true);
 
     }
 
-    public static void output(String text_1, String text_2, String text_3){
+    public static void output(String text_1, String text_2, String text_3, String text_warning, int state){
         clean_terminal();
+
+        String input_text = "";
+
+        switch (state){
+            case 1:
+                input_text = "[Ataque : 1][Defensa : 2][Magia : 3][Estadisticas : 4]";
+                break;
+            case 2:
+                input_text = "[Select : 1]________________________________[back : 0]";
+                break;
+            case 4:
+                input_text = "[Analizar a " + villan.name + " : 1]_____________________[back : 0]";
+                break;
+            case 0:
+                input_text = "[____________Presiona enter para continuar___________]";
+
+        }
 
         System.out.println(
                    "|" + text_1 + 
@@ -116,21 +133,200 @@ public class RPG_Game {
             '\n' + "|" + 
             '\n' + "|" + 
             '\n' + "|" + 
+            '\n' + "|" + text_warning + 
             '\n' + "|" + 
-            '\n' + "|" + 
-            '\n' + "[Ataque : 1][Defensa : 2][Estadisticas : 3][Magia : 4]"
+            '\n' + input_text
         );
+
+        if (state == 0){
+            enter_to_continue(true,false);
+        }
     }
 
 
     public static void game(){
-        output("Esto iniciara","","");
-        sc.nextLine();
+
+        while (true){
+            menu();
+
+            output("Nuevo ciclo","","","",0);
+
+        }
+
 
     }
 
-// Funciones del fuego
+// Funciones in_game
 
+    public static void menu(){
+        String warning = "";
+        boolean _continue = true;
+
+        while (_continue) {
+            _continue = false;
+            output("Menu","","",warning,1);
+            switch (sc.nextShort()){
+                case 1:
+                    _continue = attack_select();
+                    break;
+                case 2:
+                    _continue = defense_select();
+                    break;
+                case 3:
+                    _continue = magic_select();
+                    break;
+                case 4:
+                    _continue = statistics();
+                    break;
+                default:
+                    warning = "ADVERTENCIA:[Ingrese un valor valido]";
+                    _continue = true;
+                    break;
+        }
+
+
+
+        }
+
+
+    }
+
+
+
+
+    public static boolean attack_select(){
+        String warning = "";
+        boolean _continue = true;
+        boolean _return = true;
+
+        while (_continue) {
+            _continue = false;
+            output("Attack","","",warning,2);
+
+            switch (sc.nextShort()){
+                case 1:
+                    output("Attacking","","","",2);
+                    await(1000);
+                    _return = false;
+                    break;
+                case 0:
+                    _return = true;
+                    break;
+                default:
+                warning = "ADVERTENCIA:[Ingrese un valor valido]";
+                _continue = true;
+
+            }
+
+
+        }
+
+        return _return;
+
+    }   
+
+    public static boolean defense_select(){
+        String warning = "";
+        boolean _continue = true;
+        boolean _return = true;
+
+        while (_continue) {
+            _continue = false;
+            output("Defense","","",warning,2);
+
+            switch (sc.nextShort()){
+                case 1:
+                    output("Defending","","","",2);
+                    await(1000);
+                    _return = false;
+                    break;
+                case 0:
+                    _return = true;
+                    break;
+                default:
+                warning = "ADVERTENCIA:[Ingrese un valor valido]";
+                _continue = true;
+
+            }
+
+
+        }
+
+        return _return;
+
+    }
+
+    public static boolean magic_select(){
+        String warning = "";
+        boolean _continue = true;
+        boolean _return = true;
+
+        while (_continue) {
+            _continue = false;
+            output("Magic","","",warning,2);
+
+            switch (sc.nextShort()){
+                case 1:
+                    output("Healing","","","",2);
+                    await(1000);
+                    _return = false;
+                    break;
+                case 0:
+                    _return = true;
+                    break;
+                default:
+                warning = "ADVERTENCIA:[Ingrese un valor valido]";
+                _continue = true;
+
+            }
+
+
+        }
+
+        return _return;
+
+    }
+
+    public static boolean statistics(){
+        String warning = "";
+        boolean _continue = true;
+        boolean _return = true;
+
+        while (_continue) {
+            _continue = false;
+            output(
+            "Healt = " + hero.healt + "/" + hero.base_healt,
+            "Resistance = " + hero.resistance,
+            "Force = " + hero.force,warning,4);
+
+            switch (sc.nextShort()){
+                case 1:
+                    output("Analizando a " + villan.name,"","","",4);
+                    await(1000);
+                    output(
+                        "Healt = " + villan.healt + "/" + villan.base_healt,
+                        "Resistance = " + villan.resistance,
+                        "Force = " + villan.force,"",0);
+
+                    _return = false;
+                    break;
+                case 0:
+                    _return = true;
+                    break;
+                default:
+                warning = "ADVERTENCIA:[Ingrese un valor valido]";
+                _continue = true;
+
+            }
+
+
+        }
+
+        return _return;
+
+    }
+
+// Funciones de iniciacion del juego
     public static void load_warriors(){
         //Load_hero
         hero.base_healt = hero.healt;
@@ -165,16 +361,20 @@ public class RPG_Game {
 
             case 3:
             index_villan_upgrade = (float)(1 + difficulty_index);
+                break;
         }
                 
     }
 
 
-    public static void enter_to_continue(boolean reset_Scanner){
+    public static void enter_to_continue(boolean reset_Scanner,boolean visible_text){
         if (reset_Scanner){
             sc.nextLine();
         }
-        System.out.println("[Presiona enter para continuar]");
+        if (visible_text){
+            System.out.println("[Presiona enter para continuar]");
+        }
+        
         sc.nextLine();
         //Fin función
     }
