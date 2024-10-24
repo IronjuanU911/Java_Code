@@ -5,33 +5,38 @@ Un juego RPG
 import java.util.Scanner;
 
 class Warrior{
-    String name;
+    String name = "";
 
     float base_healt;
     float base_resistance;
     float base_force;
+    float base_magic;
 
     float healt = 200;
     float resistance = 10;
     float force = 10;
+    float magic = 100;
     boolean is_alive = true;
 
     Warrior focused;
 
-    public void is_attacked(){
-
+    public void is_attacked(float damage){
+        healt = healt - damage;
     }
 
-    public void attack(){
-        focused.is_attacked();
+    public void attack(float damage){
+        //output(name + "A atacado a " + focused.name ,"","","",0);
+        focused.is_attacked(damage);
     }
 
     public void defend(){
-
+        resistance++;
+        //output(name + "Se a defendido","","","",0);
     }
 
-    public void to_heal(){
-
+    public void magic(int type_magic){
+        healt = healt + 10;
+        //output(name + "Se a curado","","","",0);
     }
 
 }
@@ -45,6 +50,10 @@ public class RPG_Game {
     static short difficulty;
     static final float difficulty_index = 0.2f;
     static float index_villan_upgrade;
+
+    static int[] magic_process = new int[2];
+    static boolean[] defend_process = new boolean[2];
+    static float[] attack_process = new float[2];
 
     public static void main (String[] args) {
         //Inicio algoritmo
@@ -96,7 +105,7 @@ public class RPG_Game {
         clean_terminal();
         System.out.println("Es un dia muy oscuro, de seguro estas muy confundido");
         await(2500);
-        System.out.println(hero.name + ", has sido traido aqui para acabar con Falcon");
+        System.out.println(hero.name + ", has sido traido aqui para acabar con " + villan.name);
         await(2500);
         enter_to_continue(true,true);
 
@@ -148,6 +157,8 @@ public class RPG_Game {
 
         while (true){
             menu();
+
+            process_actions();
 
             output("Nuevo ciclo","","","",0);
 
@@ -206,6 +217,7 @@ public class RPG_Game {
             switch (sc.nextShort()){
                 case 1:
                     output("Attacking","","","",2);
+                    attack_process[0] = hero.force;
                     await(1000);
                     _return = false;
                     break;
@@ -237,6 +249,7 @@ public class RPG_Game {
             switch (sc.nextShort()){
                 case 1:
                     output("Defending","","","",2);
+                    defend_process[0] = true;
                     await(1000);
                     _return = false;
                     break;
@@ -268,6 +281,7 @@ public class RPG_Game {
             switch (sc.nextShort()){
                 case 1:
                     output("Healing","","","",2);
+                    magic_process[0] = 1;
                     await(1000);
                     _return = false;
                     break;
@@ -327,11 +341,82 @@ public class RPG_Game {
     }
 
 // Funciones de iniciacion del juego
+
+
+    public static void process_actions(){
+        int i = -1;
+
+        for (int type_magic : magic_process){
+            i++;
+            if (type_magic != 0){
+                switch (i){
+                    case 0:
+                        hero.magic(type_magic);
+                        magic_process[i] = 0;
+                        break;
+                    case 1:
+                        villan.magic(type_magic);
+                        magic_process[i] = 0;
+                        break;
+                }
+            }
+        }
+
+        i = -1;
+
+        for (boolean is_defend : defend_process){
+            i++;
+            if (is_defend){
+                switch (i){
+                    case 0:
+                        hero.defend();
+                        defend_process[i] = false;
+                        break;
+                    case 1:
+                        villan.defend();
+                        defend_process[i] = false;
+                        break;
+                }
+            }
+
+
+        }
+
+        i = -1;
+
+        for (float damage : attack_process){
+            i++;
+            if (damage != 0){
+                switch (i){
+                    case 0:
+                        hero.attack(damage);
+                        attack_process[i] = 0.0f;
+                        break;
+                    case 1:
+                        villan.attack(damage);
+                        attack_process[i] = 0.0f;
+                        break;
+                }
+
+            }
+
+
+        }
+
+
+    }
+
+
+
+
     public static void load_warriors(){
         //Load_hero
         hero.base_healt = hero.healt;
         hero.base_resistance = hero.resistance;
         hero.base_force = hero.force;
+        hero.base_magic = hero.magic;
+
+        hero.focused = villan;
 
 
         //Load_villan
@@ -342,10 +427,15 @@ public class RPG_Game {
         villan.base_healt = villan.healt*index_villan_upgrade;
         villan.base_resistance = villan.resistance*index_villan_upgrade;
         villan.base_force = villan.force*index_villan_upgrade;
+        villan.base_magic = villan.magic*index_villan_upgrade;
 
         villan.healt = villan.base_healt;
         villan.resistance = villan.base_resistance;
         villan.force = villan.base_force;
+        villan.magic = villan.base_magic;
+
+        villan.focused = hero;
+
 
     }
 
