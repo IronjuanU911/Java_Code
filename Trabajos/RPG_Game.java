@@ -8,6 +8,10 @@ import java.util.Random;
 class Warrior{
     String name = "";
 
+    final float healt_recovered = 30f;
+    final float magic_recovered_to_defend = 30.0f;
+    final float special_attack_multipliquer = 7.0f;
+
     float base_healt;
     float base_resistance;
     float base_force;
@@ -52,10 +56,10 @@ class Warrior{
 
     public void defend(){
         defence = active_defence;
-        if (magic + 30 > base_magic){
+        if (magic + magic_recovered_to_defend > base_magic){
             magic = base_magic;
         } else {
-            magic = magic + 30;
+            magic = magic + magic_recovered_to_defend;
         }
         
         RPG_Game.output(name + " se a defendido","","","",9);
@@ -65,13 +69,13 @@ class Warrior{
     public void magic(int type_magic){
         switch (type_magic){
             case 1://Curarse
-                healt = healt + 10;
+                healt = healt + healt_recovered;
                 magic = magic - RPG_Game.magic_to_healing;
                 RPG_Game.output(name + " se a curado","","","",9);
                 RPG_Game.await(1500);
                 break;
             case 2://Ataque especial
-                attack(force*10.0f);
+                attack(force*special_attack_multipliquer);
                 magic = magic - RPG_Game.magic_to_special_attack;
                 break;
         }
@@ -227,11 +231,22 @@ public class RPG_Game {
 
     public static void menu(){
         String warning = "";
+        String text_menu = "";
         boolean _continue = true;
+
+        if (output_process_of_attack){
+            text_menu = villan.name + " esta preparado";
+        } else if (output_process_of_special_attack){
+            text_menu = villan.name + " parece tramar algo";
+        } else if (output_process_of_healing){
+            text_menu = villan.name + " se ve herido";
+        } else{
+            text_menu = villan.name + " se ve precavido";
+        }
 
         while (_continue) {
             _continue = false;
-            output("Menu","","",warning,1);
+            output(text_menu,"","",warning,1);
             switch (sc.nextShort()){
                 case 1:
                     _continue = attack_select();
@@ -268,13 +283,11 @@ public class RPG_Game {
 
         while (_continue) {
             _continue = false;
-            output("Attack","","",warning,2);
+            output("Ataque basico hacia tu enemigo","","",warning,2);
 
             switch (sc.nextShort()){
                 case 1:
-                    output("Attacking","","","",9);
                     attack_process[0] = hero.force;
-                    await(1000);
                     _return = false;
                     break;
                 case 0:
@@ -300,13 +313,12 @@ public class RPG_Game {
 
         while (_continue) {
             _continue = false;
-            output("Defense","","",warning,2);
+            output("Defenderte te hara mas resistente ante los ataques",
+                "Tambien al descansar, recuperaras magia","",warning,2);
 
             switch (sc.nextShort()){
                 case 1:
-                    output("Defending","","","",9);
                     defend_process[0] = true;
-                    await(1000);
                     _return = false;
                     break;
                 case 0:
@@ -332,14 +344,13 @@ public class RPG_Game {
 
         while (_continue) {
             _continue = false;
-            output("Magic","","",warning,3);
+            output("Curarse : [Healt +" + hero.healt_recovered + "][Magia - " + magic_to_healing + "]",
+                "Ataque especial: [Attack with Force*" + hero.special_attack_multipliquer + "][Magia - " + magic_to_special_attack + "]","",warning,3);
 
             switch (sc.nextShort()){
                 case 1:
                     if (hero.magic >= magic_to_healing){
-                        output("Healing","","","",9);
                         magic_process[0] = 1;
-                        await(1000);
                         _return = false;
                     } else {
                         warning = "[Magia insuficiente]";
@@ -351,9 +362,7 @@ public class RPG_Game {
                     break;
                 case 2:
                     if (hero.magic >= magic_to_special_attack){
-                        output("Special_attack","","","",9);
                         magic_process[0] = 2;
-                        await(1000);
                         _return = false;
                     } else {
                         warning = "[Magia insuficiente]";
@@ -402,7 +411,7 @@ public class RPG_Game {
                         "Resistance = " + villan.resistance,
                         "Force = " + villan.force,"",0);
 
-                    _return = true; //No pasa turno al ver estadisticas enemigo
+                    _return = false; //No pasa turno al ver estadisticas enemigo
                     break;
                 case 0:
                     _return = true;
@@ -426,9 +435,43 @@ public class RPG_Game {
     static boolean process_of_attack = true;
     static boolean process_of_special_attack = false;
 
+    static boolean output_process_of_healing = false;
+    static boolean output_process_of_attack = true;
+    static boolean output_process_of_special_attack = false;
+
     public static void villan_actions(){
         final int range_to_healing = 35;
         float priority_healing = (float) villan.healt/villan.base_healt*100;
+
+
+        if (!(output_process_of_healing && output_process_of_attack && output_process_of_special_attack)){
+            if (priority_healing <= range_to_healing){
+                process_of_healing = true; 
+            } else {
+                switch (rd.nextInt(2)){
+                    case 1:
+                        process_of_special_attack = true;
+                        break;
+                    default:
+                        process_of_attack = true;
+                        break;
+                }
+            }
+
+
+        }
+
+        if (hero.magic >= magic_to_special_attack){
+            process_of_healing = false;
+            process_of_attack = false;
+            process_of_special_attack = false;
+        }
+
+        output_process_of_attack = process_of_attack;
+        output_process_of_healing = process_of_healing;
+        output_process_of_special_attack = process_of_special_attack;
+
+        //Start villan actions
 
         if (process_of_healing){
             if (villan.magic < magic_to_healing){
@@ -455,24 +498,9 @@ public class RPG_Game {
                 process_of_special_attack = false;
             }
         //End special attack
-        }
-
-        if (!(process_of_healing && process_of_attack && process_of_special_attack)){
-            if (priority_healing <= range_to_healing){
-                process_of_healing = true; 
-            } else {
-                switch (rd.nextInt(4)){
-                    case 1:
-                        process_of_special_attack = true;
-                        break;
-                    default:
-                        process_of_attack = true;
-                        break;
-                }
-            }
-
-
-        }
+        } else {
+            defend_process[1] = true;
+        } 
 
     }
 
@@ -612,7 +640,7 @@ public class RPG_Game {
                 break;
 
             case 3:
-            index_villan_upgrade = (float)(1 + difficulty_index);
+            index_villan_upgrade = (float)(1 + difficulty_index*2);
                 break;
         }
                 
