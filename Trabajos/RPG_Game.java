@@ -123,17 +123,14 @@ public class RPG_Game {
     public static void start(){
         clean_terminal();
 
-        System.out.println("Inserta tu nombre");
+        output("Inserta tu nombre","","","",8);
         hero.name = sc.nextLine();
             
-        clean_terminal();
 
         while (true){
-            
-            System.out.println("Inserta el nivel de dificultad " + '\n' + 
-            "Facil [1]" + '\n' + 
-            "Medio [2]" + '\n' + 
-            "Dificil [3]" + '\n');
+            String warning_ = "";
+
+            output("Inserta el nivel de dificultad ","Facil [1]","Medio [2]","Dificil [3]",warning_,8);
 
             difficulty = sc.nextShort();
 
@@ -141,27 +138,37 @@ public class RPG_Game {
                 set_index_villan_difficulty();
                 break;
             } else {
-                clean_terminal();
-                System.out.println("ADVERTENCIA:[Inserte un valor dentro del rango]");
+                warning_ = "[Inserte un valor dentro del rango]";
             }
         }
 
 
         load_warriors();
 
-
-        System.out.println("Cargando...");
+        output("Cargando...",9);
         await(1000);
-        clean_terminal();
-        System.out.println("Es un dia muy oscuro, de seguro estas muy confundido");
+        output("Es un dia muy oscuro, de seguro estas muy confundido",9);
         await(2500);
-        System.out.println(hero.name + ", has sido traido aqui para acabar con " + villan.name);
-        await(2500);
-        enter_to_continue(true,true);
+        output(hero.name + ", has sido traido aqui para acabar con " + villan.name,0);
 
+    }
+    public static void output(String text_1,int state){ //Sobrecarga
+        output(text_1,"","","","",state);
+    }
+
+    public static void output(String text_1,String text_warning,int state){
+        output(text_1,"","","",text_warning,state);
+    }
+
+    public static void output(String text_1,String text_2,String text_warning,int state){
+        output(text_1,text_2,"","",text_warning,state);
     }
 
     public static void output(String text_1, String text_2, String text_3, String text_warning, int state){
+        output(text_1,text_2,text_3,"",text_warning,state);
+    }
+
+    public static void output(String text_1, String text_2, String text_3, String text_4,String text_warning, int state){
         clean_terminal();
 
         String input_text = "";
@@ -179,6 +186,9 @@ public class RPG_Game {
             case 4:
                 input_text = "[Analizar a " + villan.name + " : 1]_____________________[back : 0]";
                 break;
+            case 8:
+                input_text = "[____________________________________________________]";
+                break;
             case 9:
                 input_text = "[__________________Espere por favor__________________]";
                 break;
@@ -195,7 +205,7 @@ public class RPG_Game {
             '\n' + "|" + 
             '\n' + "|" + text_3 + 
             '\n' + "|" + 
-            '\n' + "|" + 
+            '\n' + "|" + text_4 +
             '\n' + "|" + 
             '\n' + "|" + 
             '\n' + "|" + 
@@ -465,6 +475,9 @@ public class RPG_Game {
             process_of_healing = false;
             process_of_attack = false;
             process_of_special_attack = false;
+            if (villan.magic >= magic_to_special_attack){
+                process_of_special_attack = true;
+            }
         }
 
         output_process_of_attack = process_of_attack;
