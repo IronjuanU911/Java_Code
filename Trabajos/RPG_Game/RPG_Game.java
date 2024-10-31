@@ -677,11 +677,12 @@ public class RPG_Game {
 
     public static void clean_terminal()  {
         try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor(); //Borrar consola windows
         } catch (Exception e) {
-            /*No hacer nada*/
+            System.out.print("\033[H\033[2J"); //Borrar consola linux
+            System.out.flush(); 
         }
-        //Fin función
+        //Los de mac se pueden joder :D
     }
 
     public static void await(int time){
