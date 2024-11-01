@@ -18,6 +18,7 @@ class Warrior{
     float base_force;
     float base_magic;
     float base_defence;
+
     float active_defence = 0.5f;
 
     float healt = 200.0f;
@@ -92,7 +93,7 @@ class Warrior{
 
     public void attack(float damage){
         
-        focused.is_attacked(damage, me);
+        focused.is_attacked(damage, me); // Paso por valor (Damage) y paso por referencia (me)
         magic = magic + 10;
         RPG_Game.await(1500);
     }
@@ -167,10 +168,9 @@ public class RPG_Game {
         output("Inserta tu nombre","","","",8);
         hero_name = sc.nextLine();
             
+        String warning_ = "";
 
         while (true){
-            String warning_ = "";
-
             output("Inserta el nivel de dificultad ","Facil [1]","Medio [2]","Dificil [3]",warning_,8);
 
             difficulty = sc.nextShort();
@@ -192,7 +192,7 @@ public class RPG_Game {
         output(hero.name + ", has sido traido aqui para acabar con " + villan.name,0);
 
     }
-    public static void output(String text_1,int state){ //Sobrecarga
+    public static void output(String text_1,int state){ //Sobrecarga (Una misma funcion resive diferentes parametros)
         output(text_1,"","","","",state);
     }
 
@@ -395,7 +395,7 @@ public class RPG_Game {
         while (_continue) {
             _continue = false;
             output("Curarse : [Healt +" + hero.healt_recovered + "][Magia - " + magic_to_healing + "]",
-                "Ataque especial: [Attack with Force*" + hero.special_attack_multipliquer + "][Magia - " + magic_to_special_attack + "]","",warning,3);
+                "Ataque especial: [Attack with Force*" + hero.special_attack_multipliquer + "][Magia - " + magic_to_special_attack + "]","","Magic = " + hero.magic,warning,3);
 
             switch (sc.nextShort()){
                 case 1:
@@ -461,7 +461,7 @@ public class RPG_Game {
                         "Resistance = " + villan.resistance,
                         "Force = " + villan.force,"",0);
 
-                    _return = false; //No pasa turno al ver estadisticas enemigo
+                    _return = false; //false no pasa turno al ver estadisticas enemigo
                     break;
                 case 0:
                     _return = true;
