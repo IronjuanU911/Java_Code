@@ -11,6 +11,7 @@ class Warrior{
     final float healt_recovered = 30f;
     final float magic_recovered_to_defend = 30.0f;
     final float special_attack_multipliquer = 7.0f;
+    
 
     float base_healt;
     float base_resistance;
@@ -27,6 +28,48 @@ class Warrior{
 
     Warrior focused;
     Warrior me;
+
+    public float set_index_difficulty(int _difficulty){
+        final float difficulty_index = 0.2f;
+
+        float index = 0.0f;
+        switch (_difficulty){
+            case 1:
+                index = (float)(1 - difficulty_index);
+                break;
+
+            case 2:
+                index = (1.0f);
+                break;
+
+            case 3:
+                index = (float)(1 + difficulty_index*2);
+                break;
+        }
+        return index;
+                
+    }
+
+    public void load(String name_warrior, int _difficulty, Warrior focused, Warrior me){
+        name = name_warrior;
+        
+        base_healt = (float) healt*set_index_difficulty(_difficulty);
+        base_resistance = (float) resistance*set_index_difficulty(_difficulty);
+        base_force = (float) force*set_index_difficulty(_difficulty);
+        base_magic = magic;
+        base_defence = defence;
+
+        healt = base_healt;
+        resistance = base_resistance;
+        force = base_force;
+
+        magic = 0;
+
+        this.focused = focused;
+        this.me = me;
+
+    }
+
 
     public void start(){
         defence = base_defence;
@@ -94,7 +137,6 @@ public class RPG_Game {
     static Warrior hero = new Warrior();
     static Warrior villan = new Warrior();
     static short difficulty;
-    static final float difficulty_index = 0.2f;
     static float index_villan_upgrade;
 
     static int[] magic_process = new int[2];
@@ -105,6 +147,8 @@ public class RPG_Game {
     static final int magic_to_healing = 30;
     static final int magic_to_special_attack = 90;
 
+    static String hero_name = "";
+
     public static void main (String[] args) {
         //Inicio algoritmo
         
@@ -114,9 +158,6 @@ public class RPG_Game {
         game();
 
 
-
-        
-
         //Fin algoritmo
     }
 
@@ -124,7 +165,7 @@ public class RPG_Game {
         clean_terminal();
 
         output("Inserta tu nombre","","","",8);
-        hero.name = sc.nextLine();
+        hero_name = sc.nextLine();
             
 
         while (true){
@@ -135,7 +176,6 @@ public class RPG_Game {
             difficulty = sc.nextShort();
 
             if (difficulty > 0 && difficulty < 4){
-                set_index_villan_difficulty();
                 break;
             } else {
                 warning_ = "[Inserte un valor dentro del rango]";
@@ -606,58 +646,12 @@ public class RPG_Game {
 
 
     public static void load_warriors(){
-        //Load_hero
-        hero.base_healt = hero.healt;
-        hero.base_resistance = hero.resistance;
-        hero.base_force = hero.force;
-        hero.base_magic = hero.magic;
-        hero.base_defence = hero.defence;
-
-        hero.focused = villan;
-        hero.me = hero;
-
-        hero.magic = 0;
-
-
-        //Load_villan
-
-        villan.name = "Cronos";
-
-        
-        villan.base_healt = villan.healt*index_villan_upgrade;
-        villan.base_resistance = villan.resistance*index_villan_upgrade;
-        villan.base_force = villan.force*index_villan_upgrade;
-        villan.base_magic = villan.magic;
-        villan.base_defence = villan.defence;
-
-        villan.healt = villan.base_healt;
-        villan.resistance = villan.base_resistance;
-        villan.force = villan.base_force;
-
-        villan.magic = 0;
-
-        villan.focused = hero;
-        villan.me = villan;
+        hero.load(hero_name, 2, villan, hero);
+        villan.load("Cronos", difficulty, hero, villan);
 
 
     }
 
-    public static void set_index_villan_difficulty(){
-        switch (difficulty){
-            case 1:
-                index_villan_upgrade = (float)(1 - difficulty_index);
-                break;
-
-            case 2:
-                index_villan_upgrade = (1.0f);
-                break;
-
-            case 3:
-            index_villan_upgrade = (float)(1 + difficulty_index*2);
-                break;
-        }
-                
-    }
 
 
     public static void enter_to_continue(boolean reset_Scanner,boolean visible_text){
