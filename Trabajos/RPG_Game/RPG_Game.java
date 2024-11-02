@@ -2,8 +2,8 @@
 Un juego RPG
 */
 
-import java.util.Scanner;
 import java.util.Random;
+import java.util.Scanner;
 
 class Warrior{
     String name = "";
@@ -35,17 +35,15 @@ class Warrior{
 
         float index = 0.0f;
         switch (_difficulty){
-            case 1:
+            case 1 ->
                 index = (float)(1 - difficulty_index);
-                break;
 
-            case 2:
+            case 2 ->
                 index = (1.0f);
-                break;
 
-            case 3:
+            case 3 ->
                 index = (float)(1 + difficulty_index*2);
-                break;
+
         }
         return index;
                 
@@ -112,16 +110,18 @@ class Warrior{
 
     public void magic(int type_magic){
         switch (type_magic){
-            case 1://Curarse
+            case 1 -> {
+                //Curarse
                 healt = healt + healt_recovered;
-                magic = magic - RPG_Game.magic_to_healing;
+                magic = magic - RPG_Game.MAGIC_TO_HEALING;
                 RPG_Game.output(name + " se a curado","","","",9);
                 RPG_Game.await(1500);
-                break;
-            case 2://Ataque especial
+            }
+            case 2 -> {
+                //Ataque especial
                 attack(force*special_attack_multipliquer);
-                magic = magic - RPG_Game.magic_to_special_attack;
-                break;
+                magic = magic - RPG_Game.MAGIC_TO_SPECIAL_ATTACK;
+            }
         }
         
         
@@ -138,15 +138,14 @@ public class RPG_Game {
     static Warrior hero = new Warrior();
     static Warrior villan = new Warrior();
     static short difficulty;
-    static float index_villan_upgrade;
 
     static int[] magic_process = new int[2];
     static boolean[] defend_process = new boolean[2];
     static float[] attack_process = new float[2];
 
 
-    static final int magic_to_healing = 30;
-    static final int magic_to_special_attack = 90;
+    static final int MAGIC_TO_HEALING = 30; //magic_to_healin
+    static final int MAGIC_TO_SPECIAL_ATTACK = 90; //magic_to_special_attack
 
     static String hero_name = "";
 
@@ -214,27 +213,27 @@ public class RPG_Game {
         String input_text = "";
 
         switch (state){
-            case 1:
+            case 1 ->
                 input_text = "[Ataque : 1][Defensa : 2][Magia : 3][Estadisticas : 4]";
-                break;
-            case 2:
+
+            case 2 ->
                 input_text = "[Select : 1]________________________________[back : 0]";
-                break;
-            case 3:
+
+            case 3 ->
                 input_text = "[Curarse : 1][Ataque especial : 2]__________[back : 0]";
-                break;
-            case 4:
+
+            case 4 ->
                 input_text = "[Analizar a " + villan.name + " : 1]_____________________[back : 0]";
-                break;
-            case 8:
+
+            case 8 ->
                 input_text = "[____________________________________________________]";
-                break;
-            case 9:
+
+            case 9 ->
                 input_text = "[__________________Espere por favor__________________]";
-                break;
-            case 0:
+
+            case 0 ->
                 input_text = "[____________Presiona enter para continuar___________]";
-                break;
+
 
         }
 
@@ -281,7 +280,7 @@ public class RPG_Game {
 
     public static void menu(){
         String warning = "";
-        String text_menu = "";
+        String text_menu;
         boolean _continue = true;
 
         if (output_process_of_attack){
@@ -295,25 +294,24 @@ public class RPG_Game {
         }
 
         while (_continue) {
-            _continue = false;
             output(text_menu,"","",warning,1);
             switch (sc.nextShort()){
-                case 1:
+                case 1 ->
                     _continue = attack_select();
-                    break;
-                case 2:
+
+                case 2 ->
                     _continue = defense_select();
-                    break;
-                case 3:
+
+                case 3 ->
                     _continue = magic_select();
-                    break;
-                case 4:
+
+                case 4 ->
                     _continue = statistics();
-                    break;
-                default:
+
+                default ->{
                     warning = "ADVERTENCIA:[Ingrese un valor valido]";
                     _continue = true;
-                    break;
+                }
         }
 
 
@@ -336,16 +334,17 @@ public class RPG_Game {
             output("Ataque basico hacia tu enemigo","","",warning,2);
 
             switch (sc.nextShort()){
-                case 1:
+                case 1 -> {
                     attack_process[0] = hero.force;
                     _return = false;
-                    break;
-                case 0:
+                }
+                case 0 -> {
                     _return = true;
-                    break;
-                default:
+                }
+                default -> {
                 warning = "ADVERTENCIA:[Ingrese un valor valido]";
                 _continue = true;
+                }
 
             }
 
@@ -367,16 +366,17 @@ public class RPG_Game {
                 "Tambien al descansar, recuperaras magia","",warning,2);
 
             switch (sc.nextShort()){
-                case 1:
+                case 1 ->{
                     defend_process[0] = true;
                     _return = false;
-                    break;
-                case 0:
+                }
+                case 0 ->
                     _return = true;
-                    break;
-                default:
+
+                default ->{
                 warning = "ADVERTENCIA:[Ingrese un valor valido]";
                 _continue = true;
+                }
 
             }
 
@@ -394,40 +394,35 @@ public class RPG_Game {
 
         while (_continue) {
             _continue = false;
-            output("Curarse : [Healt +" + hero.healt_recovered + "][Magia - " + magic_to_healing + "]",
-                "Ataque especial: [Attack with Force*" + hero.special_attack_multipliquer + "][Magia - " + magic_to_special_attack + "]","","Magic = " + hero.magic,warning,3);
+            output("Curarse : [Healt +" + hero.healt_recovered + "][Magia - " + MAGIC_TO_HEALING + "]",
+                "Ataque especial: [Attack with Force*" + hero.special_attack_multipliquer + "][Magia - " + MAGIC_TO_SPECIAL_ATTACK + "]","",warning,"Magic = " + hero.magic,3);
 
             switch (sc.nextShort()){
-                case 1:
-                    if (hero.magic >= magic_to_healing){
+                case 1 -> {
+                    if (hero.magic >= MAGIC_TO_HEALING){
                         magic_process[0] = 1;
                         _return = false;
                     } else {
                         warning = "[Magia insuficiente]";
                         _continue = true;
                     }
-
-                    
-
-                    break;
-                case 2:
-                    if (hero.magic >= magic_to_special_attack){
+                }
+                case 2 -> {
+                    if (hero.magic >= MAGIC_TO_SPECIAL_ATTACK){
                         magic_process[0] = 2;
                         _return = false;
                     } else {
                         warning = "[Magia insuficiente]";
                         _continue = true; 
                     }
-                    
-                    break;
+                }
 
-                case 0:
-                    _return = true;
-                    break;
-                default:
+                case 0 -> _return = true;
+
+                default -> {
                     warning = "ADVERTENCIA:[Ingrese un valor valido]";
                     _continue = true;
-                    break;
+                }
 
             }
 
@@ -452,7 +447,7 @@ public class RPG_Game {
             "Force = " + hero.force,warning,4);
 
             switch (sc.nextShort()){
-                case 1:
+                case 1 -> {
                     output("Analizando a " + villan.name,"","","",9);
                     await(1000);
                     output(
@@ -462,13 +457,16 @@ public class RPG_Game {
                         "Force = " + villan.force,"",0);
 
                     _return = false; //false no pasa turno al ver estadisticas enemigo
-                    break;
-                case 0:
+                }
+
+                case 0 -> {
                     _return = true;
-                    break;
-                default:
+                }
+
+                default -> {
                 warning = "ADVERTENCIA:[Ingrese un valor valido]";
                 _continue = true;
+                }
 
             }
 
@@ -499,23 +497,25 @@ public class RPG_Game {
                 process_of_healing = true; 
             } else {
                 switch (rd.nextInt(2)){
-                    case 1:
+                    case 1 -> {
                         process_of_special_attack = true;
-                        break;
-                    default:
+                    }
+
+                    default -> {
                         process_of_attack = true;
-                        break;
+                    }
+                    
                 }
             }
 
 
         }
 
-        if (hero.magic >= magic_to_special_attack){
+        if (hero.magic >= MAGIC_TO_SPECIAL_ATTACK){
             process_of_healing = false;
             process_of_attack = false;
             process_of_special_attack = false;
-            if (villan.magic >= magic_to_special_attack){
+            if (villan.magic >= MAGIC_TO_SPECIAL_ATTACK){
                 process_of_special_attack = true;
             }
         }
@@ -527,7 +527,7 @@ public class RPG_Game {
         //Start villan actions
 
         if (process_of_healing){
-            if (villan.magic < magic_to_healing){
+            if (villan.magic < MAGIC_TO_HEALING){
                 defend_process[1] = true;
             }else{
                 magic_process[1] = 1;
@@ -544,7 +544,7 @@ public class RPG_Game {
         }
 
         else if (process_of_special_attack){
-            if (villan.magic < magic_to_special_attack){
+            if (villan.magic < MAGIC_TO_SPECIAL_ATTACK){
                 defend_process[1] = true;
             } else {
                 magic_process[1] = 2;
@@ -560,7 +560,7 @@ public class RPG_Game {
 
     public static boolean process_actions(){
         int i = -1;
-        boolean end_game = false;
+        boolean end_game;
 
         hero.start();
         villan.start();
@@ -569,14 +569,14 @@ public class RPG_Game {
             i++;
             if (is_defend){
                 switch (i){
-                    case 0:
+                    case 0 -> {
                         hero.defend();
                         defend_process[i] = false;
-                        break;
-                    case 1:
+                    }
+                    case 1 -> {
                         villan.defend();
                         defend_process[i] = false;
-                        break;
+                    }
                 }
             }
 
@@ -589,14 +589,14 @@ public class RPG_Game {
             i++;
             if (type_magic != 0){
                 switch (i){
-                    case 0:
+                    case 0 -> {
                         hero.magic(type_magic);
                         magic_process[i] = 0;
-                        break;
-                    case 1:
+                    }
+                    case 1 -> {
                         villan.magic(type_magic);
                         magic_process[i] = 0;
-                        break;
+                    }
                 }
             }
         }
@@ -609,14 +609,14 @@ public class RPG_Game {
             i++;
             if (damage != 0){
                 switch (i){
-                    case 0:
+                    case 0 -> {
                         hero.attack(damage);
                         attack_process[i] = 0.0f;
-                        break;
-                    case 1:
+                    }
+                    case 1 -> {
                         villan.attack(damage);
                         attack_process[i] = 0.0f;
-                        break;
+                    }
                 }
 
             }
@@ -687,6 +687,7 @@ public class RPG_Game {
         }
         //Fin función
     }
+
 
 
 }
