@@ -2,6 +2,7 @@
 Un juego RPG
 */
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -652,8 +653,6 @@ public class RPG_Game {
 
     }
 
-
-
     public static void enter_to_continue(boolean reset_Scanner,boolean visible_text){
         if (reset_Scanner){
             sc.nextLine();
@@ -669,22 +668,23 @@ public class RPG_Game {
 
 // Funciones del sistema
 
+
     public static void clean_terminal()  {
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor(); //Borrar consola windows
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException e) {
             System.out.print("\033[H\033[2J"); //Borrar consola linux
             System.out.flush(); 
         }
         //Los de mac se pueden joder :D
     }
 
+    
+
     public static void await(int time){
         try {
             Thread.sleep(time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        } catch (InterruptedException e) {}
         //Fin función
     }
 
