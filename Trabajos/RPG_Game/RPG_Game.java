@@ -185,7 +185,7 @@ public class RPG_Game {
 
         load_warriors();
 
-        output("Cargando...",9);
+        output("Cargando...",9)
         await(1000);
         output("Es un dia muy oscuro, de seguro estas muy confundido",9);
         await(2500);
