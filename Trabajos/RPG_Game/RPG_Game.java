@@ -36,14 +36,17 @@ class Warrior{
 
         float index = 0.0f;
         switch (_difficulty){
-            case 1 ->
+            case 1 ->{
                 index = (float)(1 - difficulty_index);
+            }
 
-            case 2 ->
+            case 2 ->{
                 index = (1.0f);
+            }
 
-            case 3 ->
+            case 3 ->{
                 index = (float)(1 + difficulty_index*2);
+            }
 
         }
         return index;
@@ -129,7 +132,7 @@ class Warrior{
     }
 
 
-}
+} // End Warrior
 
 
 public class RPG_Game {
@@ -185,7 +188,7 @@ public class RPG_Game {
 
         load_warriors();
 
-        output("Cargando...",9)
+        output("Cargando...",9);
         await(1000);
         output("Es un dia muy oscuro, de seguro estas muy confundido",9);
         await(2500);

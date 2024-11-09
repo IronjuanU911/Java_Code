@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Area_de_un_poligono",
+            "request": "launch",
+            "mainClass": "Area_de_un_poligono",
+            "projectName": "Java_Code_275ceaa8"
+        },
+        {
+            "type": "java",
             "name": "RPG_Game",
             "request": "launch",
             "mainClass": "RPG_Game",
