@@ -1,42 +1,49 @@
 /*
-Dada una lista de elementos (array), crear una funcion que retorne una nueva 
+Dada una lista de elementos (array), crear una funcion que retorne una nueva
 lista con solo los elementos que aparecen una cantidad n veces repetidos sean pares.
 
 ["A","B","A","C","C","C","C"] // -> ["A","C"]
 [1,2,3,1,2] // -> [1,2]
 */
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
-import java.io.IOException;
 
 public class ElementosPares {
-    public static void main (String[] args) {
+
+    public static void main(final String[] args) {
         F_System.clean_terminal();
 
-        Scanner sc = new Scanner(System.in);//Creamos el objeto Scanner
-        ArrayList<String> Input_Array = new ArrayList<String>();
+        final Scanner sc = new Scanner(System.in); //Creamos el objeto Scanner
+        final ArrayList<String> Input_Array = new ArrayList<String>();
 
         System.out.println("Cuantos elementos desea añadir al array?");
-        int Elementos_a_añadir = sc.nextInt();
+        final int Elementos_a_añadir = sc.nextInt();
 
-        sc.nextLine();//Que mamon que me daba error por no tener esto :'v
+        sc.nextLine(); //Que mamon que me daba error por no tener esto :'v
 
-        for (int i = 0; Elementos_a_añadir > i; i++){
+        for (int i = 0; Elementos_a_añadir > i; i++) {
             F_System.clean_terminal();
 
-            int i_add = i + 1;
+            final int i_add = i + 1;
 
-            System.out.print("Estado actual del array : ");//Mostramos al usuario el estado actual del array
+            System.out.print("Estado actual del array : "); //Mostramos al usuario el estado actual del array
             iterador_ArrayList(Input_Array);
 
-            System.out.println("Inserte el elemento numero " + i_add + " de " + Elementos_a_añadir);//Le pedimos al usuario el siguiente elemento del array
+            System.out.println(
+                "Inserte el elemento numero " +
+                i_add +
+                " de " +
+                Elementos_a_añadir
+            ); //Le pedimos al usuario el siguiente elemento del array
             Input_Array.add(sc.nextLine());
+        } //Fin ciclo
 
-        }//Fin ciclo
-
-        ArrayList Output_Array = Elementos_pares_repetidos(Input_Array);
+        final ArrayList<String> Output_Array = Elementos_pares_repetidos(
+            Input_Array
+        );
 
         F_System.clean_terminal();
 
@@ -47,62 +54,56 @@ public class ElementosPares {
         iterador_ArrayList(Output_Array);
 
         sc.close();
-    }//Fin algoritmo
+    } //Fin algoritmo
 
+    public static ArrayList<String> Elementos_pares_repetidos(
+        final ArrayList<String> Array_to_test
+    ) {
+        final ArrayList<String> Elementos_pares = new ArrayList<String>(); //Creamos arrays para almacenar si un elemento se encuentra de manera par o impar
+        final ArrayList<String> Elementos_inpares = new ArrayList<String>();
 
-    public static ArrayList<String> Elementos_pares_repetidos(ArrayList<String> Array_to_test){
-        ArrayList<String> Elementos_pares = new ArrayList<String>(); //Creamos arrays para almacenar si un elemento se encuentra de manera par o impar
-        ArrayList<String> Elementos_inpares = new ArrayList<String>();
-
-        for (String Elemento : Array_to_test){
-            if (Elementos_pares.contains(Elemento)){ //Comprobamos si se encuentra el elemento en pares, para eliminarlo
+        for (final String Elemento : Array_to_test) {
+            if (Elementos_pares.contains(Elemento)) { //Comprobamos si se encuentra el elemento en pares, para eliminarlo
                 Elementos_pares.remove(Elemento);
                 Elementos_inpares.add(Elemento); //Y luego añadirlo a los impares
-
-            } else if (Elementos_inpares.contains(Elemento)){ //Comprobamos si se encuentra el elemento en inpares, para eliminarlo
+            } else if (Elementos_inpares.contains(Elemento)) { //Comprobamos si se encuentra el elemento en inpares, para eliminarlo
                 Elementos_inpares.remove(Elemento);
                 Elementos_pares.add(Elemento); //Y luego añadirlo a los pares
-            } else{
+            } else {
                 Elementos_inpares.add(Elemento); //Si ambos arrays no poseen el elemento, quiere desir que es la primera ves que lo encuentra, por lo tanto es un elemento impar por el momento
-            } 
-                
-        //Finaliza ciclo
+            }
+            //Finaliza ciclo
         }
 
-    return Elementos_pares;
-
-
+        return Elementos_pares;
     }
 
-    public static void iterador_ArrayList(ArrayList<String> Array){
-        Iterator<String> Iterador_array = Array.iterator();
+    public static void iterador_ArrayList(final ArrayList<String> Array) {
+        final Iterator<String> Iterador_array = Array.iterator();
         System.out.print("[");
-        for (int i = 0; Iterador_array.hasNext(); i++){ //Verificamos si existe un elemento siguiente por iterar
+        for (; Iterador_array.hasNext();) { //Verificamos si existe un elemento siguiente por iterar
             System.out.print(Iterador_array.next()); //Si es el caso se imprime
 
-            if (Iterador_array.hasNext()){//Si quedan elementos por imprimir, se pone una coma
+            if (Iterador_array.hasNext()) { //Si quedan elementos por imprimir, se pone una coma
                 System.out.print(", ");
             }
-            
-        }//Fin bucle
+        } //Fin bucle
 
         System.out.println("]");
-
-
-        
-    }//Fin funcion
-
-
+    } //Fin funcion
 }
 
+class F_System { //Clase que contiene funciones que utiliza este sistema pa que se vea mejor
 
-public class F_System{ //Clase que contiene funciones que utiliza este sistema pa que se vea mejor
-    public static void clean_terminal()  {
+    public static void clean_terminal() {
         try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor(); //Borrar consola windows
+            new ProcessBuilder("cmd", "/c", "cls")
+                .inheritIO()
+                .start()
+                .waitFor(); //Borrar consola windows
         } catch (IOException | InterruptedException e) {
             System.out.print("\033[H\033[2J"); //Borrar consola linux
-            System.out.flush(); 
+            System.out.flush();
         }
         //Los de mac se pueden joder :D
     }
