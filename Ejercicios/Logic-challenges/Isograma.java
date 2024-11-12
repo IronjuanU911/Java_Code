@@ -47,9 +47,14 @@ public class Isograma {
         int text_length = Array_text.length; //Establecemos el tamaño del array fuera del ciclo
 
         for (int i = 0; text_length > i; i++) { //i es el numero que se revisara si no es igual al resto
+            if (Array_text[i] == ' ') { //Si se detecta un espacio significa que hay 2 palabras, entonces no es isograma
+                texto_es_isograma = false;
+                break;
+            }
             for (int j = 0; text_length > j; j++) { //j es el resto de numeros en cada ciclo
                 if (i != j && Array_text[i] == Array_text[j]) { //Quiere decir que, aunque la letra se encuentre en
                     texto_es_isograma = false; //posicion diferente, si son iguales significa que es isograma
+                    break;
                 }
             }
         }
