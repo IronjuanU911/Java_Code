@@ -1,6 +1,7 @@
 /*
 Clase F_Sistem que contiene funciones personalizadas por mi
 */
+
 import java.io.IOException;
 
 class F_System { //Clase que contiene funciones que utiliza este sistema pa que se vea mejor
