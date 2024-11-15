@@ -8,7 +8,6 @@ func("abc", "bc"); // returns true
 func("abc", "d"); // returns false
 */
 import java.util.Scanner;
-import java.io.IOException;
 
 public class String_termina_con{
     public static void main (String[] args) {
@@ -61,15 +60,4 @@ public class String_termina_con{
         return condition_is_true;
     }
 
-}
-class F_System { //Clase que contiene funciones que utiliza este sistema pa que se vea mejor
-    public static void clean_terminal() {
-        try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor(); //Borrar consola windows
-        } catch (IOException | InterruptedException e) {
-            System.out.print("\033[H\033[2J"); //Borrar consola linux
-            System.out.flush();
-        }
-        //Los de mac se pueden joder :D
-    }
 }

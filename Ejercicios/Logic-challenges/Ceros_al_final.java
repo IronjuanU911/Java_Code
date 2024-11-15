@@ -8,7 +8,6 @@ moverCeros([false, 1, 0, 1, 2, 0, 1, 3, "a"]); // [false,1,1,2,1,3,"a",0,0]
 Bonus: Implementar la función sin usar una variable de contador
 */
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -80,7 +79,7 @@ public class Ceros_al_final {
     }
 
 }
-
+/*
 
 class F_System { //Clase que contiene funciones que utiliza este sistema pa que se vea mejor
     public static void clean_terminal() {
@@ -93,3 +92,5 @@ class F_System { //Clase que contiene funciones que utiliza este sistema pa que 
         //Los de mac se pueden joder :D
     }
 }
+
+*/
