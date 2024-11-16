@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Continentes_representados",
+            "request": "launch",
+            "mainClass": "Continentes_representados",
+            "projectName": "Java_Code_275ceaa8"
+        },
+        {
+            "type": "java",
             "name": "Area_de_un_poligono",
             "request": "launch",
             "mainClass": "Area_de_un_poligono",
