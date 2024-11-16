@@ -9,7 +9,9 @@ Consideraciones Adicionales:
     Se tiene que hacer clean up del string antes de comparar.
 
 */
+package Ejercicios.Logic_challenges;
 
+import iron_package.F_System;
 import java.util.Scanner;
 
 public class Isograma {

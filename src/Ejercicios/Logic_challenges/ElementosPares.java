@@ -5,7 +5,9 @@ lista con solo los elementos que aparecen una cantidad n veces repetidos sean pa
 ["A","B","A","C","C","C","C"] // -> ["A","C"]
 [1,2,3,1,2] // -> [1,2]
 */
+package Ejercicios.Logic_challenges;
 
+import iron_package.F_System;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
