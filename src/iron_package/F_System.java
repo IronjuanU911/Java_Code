@@ -34,7 +34,7 @@ public class F_System { //Clase que contiene funciones que utiliza este sistema 
     }
 
     public static void Output(String text_1, String text_2, String text_3, String text_4, String text_end){
-        String text_menu = "[_______________Code_by_Iron_______________]";
+        String text_menu = "[___________________Code_by_Iron___________________]";
         clean_terminal();
         System.out.println(
                      "|" + text_1

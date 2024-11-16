@@ -36,7 +36,7 @@ public class Fizzbuss {
             }
         }
         
-        
+        sc.close();
         //Fin codigo
     }
 }

@@ -59,7 +59,7 @@ public class Descuentos_tienda_de_ropa{
         System.out.println("No se a comprado ningun producto.");
     }
     
-    
+    sc.close();
     //Fin algoritmo
     }
 }

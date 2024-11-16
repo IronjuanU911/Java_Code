@@ -32,6 +32,6 @@ public class Sueldo_semanal {
             
             System.out.println("El usuario merese una paga de " + paga_total + " pesos."); //Salida
         }
-        
+        sc.close();
     }
 }

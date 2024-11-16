@@ -7,7 +7,7 @@ moverCeros([false, 1, 0, 1, 2, 0, 1, 3, "a"]); // [false,1,1,2,1,3,"a",0,0]
 
 Bonus: Implementar la función sin usar una variable de contador
 */
-package Ejercicios.Logic_challenges;
+package Logic_challenges;
 
 import iron_package.F_System;
 import java.util.ArrayList;

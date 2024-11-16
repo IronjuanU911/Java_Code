@@ -9,7 +9,7 @@ Consideraciones Adicionales:
 Ejemplo:
 func("abc def"); // returns '1 2 3 4 5 6';
 */
-package Ejercicios.Logic_challenges;
+package Logic_challenges;
 
 import iron_package.F_System;
 import java.util.Scanner;

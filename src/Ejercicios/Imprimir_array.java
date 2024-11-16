@@ -35,6 +35,7 @@ public class Imprimir_array {
             
         }
         
+        sc.close();
         //Final
     }
 }

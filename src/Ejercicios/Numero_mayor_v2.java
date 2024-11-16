@@ -20,6 +20,7 @@ public class Numero_mayor_v2 {
         int c = sc.nextInt();
         
         System.out.print("El numero mayor es " + detectar_mayor(a,b,c));
+        sc.close();
         //Fin algoritmo
     }
     

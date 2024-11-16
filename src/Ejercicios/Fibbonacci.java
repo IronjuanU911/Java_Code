@@ -46,6 +46,7 @@ public class Fibbonacci {
             repeticion_actual += 1; //Aumentamos en uno el contador de repeticiones
         }
 
+        sc.close();
         //Fin algoritmo
     }
 }

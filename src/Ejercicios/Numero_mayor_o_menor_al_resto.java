@@ -34,6 +34,7 @@ public class Numero_mayor_o_menor_al_resto {
             
         }
         
+        sc.close();
         //Final
     }
 }

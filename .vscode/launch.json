@@ -8,6 +8,20 @@
             "type": "java",
             "name": "Continentes_representados",
             "request": "launch",
+            "mainClass": "Logic_challenges.Continentes_representados",
+            "projectName": "Java_Code_ccbe1ebb"
+        },
+        {
+            "type": "java",
+            "name": "Ceros_al_final",
+            "request": "launch",
+            "mainClass": "Logic_challenges.Ceros_al_final",
+            "projectName": "Java_Code_ccbe1ebb"
+        },
+        {
+            "type": "java",
+            "name": "Continentes_representados",
+            "request": "launch",
             "mainClass": "Continentes_representados",
             "projectName": "Java_Code_275ceaa8"
         },

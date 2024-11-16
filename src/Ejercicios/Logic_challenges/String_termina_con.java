@@ -7,7 +7,7 @@ y devuelva si el primero termina con el segundo. Ejemplos:
 func("abc", "bc"); // returns true
 func("abc", "d"); // returns false
 */
-package Ejercicios.Logic_challenges;
+package Logic_challenges;
 
 import iron_package.F_System;
 import java.util.Scanner;
