@@ -59,14 +59,13 @@ Bonus:
 */
 package Logic_challenges;
 
-import iron_package.F_System;
+import iron_package.*;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 class developer{
     String firstName;
     String lastName;
-    String country;
     String continent;
     String language;
     int age;
@@ -88,14 +87,13 @@ class developer{
 }
 
 public class Continentes_representados {
-    static Scanner sc = new Scanner(System.in);
     static ArrayList<developer> developer_list = new ArrayList<developer>();
     final static String[] all_continents = {"","Africa", "America","Asia","Europe","Oceania"};
     final static String[] all_languages = {"","Python","JavaScript","C/C++","Ruby","PHP","Java"};
-    public static void main (String[] args) {
-        add_developer();
 
-        //Fin algoritmo
+    public static void main (String[] args) {
+      start_menu();
+
     }
 
     public static boolean all_continents_developer_presented(){
@@ -110,7 +108,7 @@ public class Continentes_representados {
       quedan continentes restantes, devolvera false. 
       */
 
-      for (int i = 1; remaining_continents_length >= i ; i++){
+      for (int i = 1; remaining_continents_length > i ; i++){
         for (developer select_developer : developer_list){
           if (select_developer.continent.equals(remaining_continents[i])){
             remaining_continents[i] = ""; //Volverlo vacio. 
@@ -118,27 +116,127 @@ public class Continentes_representados {
         }
       }
 
+
+      for (String null_text : remaining_continents){ //Comprobamos si todos los elementos en remain_contientes son vacios
+        if (!(null_text.equals(""))){
+          is_true = false;
+          break;
+        }
+      }
+
       return is_true;
+
+    }
+
+    public static void start_menu(){
+      boolean _continue = true;
+      String warning = "";
+      while (_continue){
+        _continue = false;
+        F_System.Output(
+        "[1]Añadir desarrollador",
+        "[2]Ver lista de desarrolladores",
+        "[0]Salir",
+
+        warning,0);
+
+        switch(F_Input.Int_mode()){
+          case 1 -> add_developer();
+          case 2 -> developers_menu(0);
+          case 0 -> {}
+          default -> {
+            _continue = true;
+            warning = "Inserte un valor valido";
+          }
+        }
+
+      }
+
+    }
+
+    public static void developers_menu(int index_developer){
+      int developer_list_lenght = developer_list.size();
+
+      final boolean cant_left = index_developer == 0;
+      final boolean cant_right = index_developer == developer_list_lenght -1;
+
+      developer developer_selected = developer_list.get(index_developer);
+
+      int output_mode;
+
+      if (cant_left && cant_right){ //Seleccionamos el modo del output que se mostrara
+        output_mode = 4;
+      } else if (cant_left){
+        output_mode = 2;
+      } else if (cant_right){
+        output_mode = 3;
+      } else {
+        output_mode = 1;
+      }
+
+
+      boolean _continue = true;
+      String warning = "";
+
+      while(_continue){
+        _continue = false;
+        F_System.Output("Nombre: " + developer_selected.firstName + " " + developer_selected.lastName,
+          "Edad: " + developer_selected.age,
+          "Continente: " + developer_selected.continent,
+          "Lenguaje: " + developer_selected.language,
+
+          warning,
+          output_mode); // Las opciones a elegir, son las que se muestran en la funcion Output
+
+
+
+        switch (F_Input.String_mode()){ //Dependiendo del valor que se ingrese, se ingresara a su respectivo menu
+          case "x" -> {
+            start_menu();
+          }
+          case "a" -> {
+            if(!cant_left){
+              developers_menu(index_developer - 1);
+            } else {
+              _continue = true;
+            }
+          }
+          case "d" -> {
+            if (!cant_right){
+              developers_menu(index_developer + 1);
+            } else {
+              _continue = true;
+            }
+          }
+          default -> {
+            _continue = true;
+          }
+        }
+
+        warning = "Inserte un valor dentro del rango";
+
+      }
+
+    
 
     }
 
 
     public static void add_developer(){
         developer new_developer = new developer();
-        F_System.Output("Inserte el nombre del desarrollador");
-        String firstName = sc.nextLine();
+        F_System.Output("Inserte el nombre del desarrollador",0);
+        String firstName = F_Input.String_mode();
 
-        F_System.Output("Inserte el apellido del desarrollador");
-        String lastName = sc.nextLine();
+        F_System.Output("Inserte el apellido del desarrollador",0);
+        String lastName = F_Input.String_mode();
 
-        F_System.Output("Inserte la edad del desarrollador");
-        int age = sc.nextInt();
+        F_System.Output("Inserte la edad del desarrollador",0);
+        int age = F_Input.Int_mode();
 
         String continent = "";
         String language = "";
         String text_warning = "";
         boolean _continue = true;
-
 
         while(_continue){
             _continue = false;
@@ -147,8 +245,8 @@ public class Continentes_representados {
                 "[2]" + all_continents[2] + "        [5]" + all_continents[5],
                 "[3]" + all_continents[3],
                 text_warning
-                );
-            switch (sc.nextInt()){
+                ,0);
+            switch (F_Input.Int_mode()){
                 case 1 -> continent = all_continents[1];
                 case 2 -> continent = all_continents[2];
                 case 3 -> continent = all_continents[3];
@@ -169,9 +267,9 @@ public class Continentes_representados {
               "[2]" + all_languages[2] + "     [5]" + all_languages[5],
               "[3]" + all_languages[3] + "          [6]" + all_languages[6],
               text_warning
-              );
+              ,0);
 
-          switch(sc.nextInt()){
+          switch(F_Input.Int_mode()){
             case 1 -> language = all_languages[1];
             case 2 -> language = all_languages[2];
             case 3 -> language = all_languages[3];
@@ -194,6 +292,7 @@ public class Continentes_representados {
 
         developer_list.add(new_developer);
 
+        start_menu();
     }
 
 }

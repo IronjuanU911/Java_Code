@@ -17,24 +17,35 @@ public class F_System { //Clase que contiene funciones que utiliza este sistema 
         //Los de mac se pueden joder :D
     }
 
-    public static void Output(String text_1){
-        Output(text_1,"","", "","");
+    public static void Output(String text_1, int mode){
+        Output(text_1,"","", "","",mode);
     }
 
-    public static void Output(String text_1, String text_end){
-        Output(text_1,"","", "",text_end);
+    public static void Output(String text_1, String text_end, int mode){
+        Output(text_1,"","", "",text_end,mode);
     }
 
-    public static void Output(String text_1, String text_2, String text_end){
-        Output(text_1,text_2,"", "",text_end);
+    public static void Output(String text_1, String text_2, String text_end, int mode){
+        Output(text_1,text_2,"", "",text_end,mode);
     }
 
-    public static void Output(String text_1, String text_2, String text_3, String text_end){
-        Output(text_1,text_2,text_3,"",text_end);
+    public static void Output(String text_1, String text_2, String text_3, String text_end, int mode){
+        Output(text_1,text_2,text_3,"",text_end,mode);
     }
 
-    public static void Output(String text_1, String text_2, String text_3, String text_4, String text_end){
-        String text_menu = "[___________________Code_by_Iron___________________]";
+    public static void Output(String text_1, String text_2, String text_3, String text_4, String text_end, int mode){
+        
+        String text_menu = "";
+
+        switch(mode){
+            case 1 -> text_menu = "[Left : a][Right: d]_______________________[Exit: x]";
+            case 2 -> text_menu = "[Right: d]_________________________________[Exit: x]";
+            case 3 -> text_menu = "[Left: a]__________________________________[Exit: x]";
+            case 4 -> text_menu = "___________________________________________[Exit: x]";
+            default -> text_menu = "[___________________Code_by_Iron___________________]";
+        }
+        
+        
         clean_terminal();
         System.out.println(
                      "|" + text_1
@@ -54,3 +65,4 @@ public class F_System { //Clase que contiene funciones que utiliza este sistema 
     }
 
 }
+
