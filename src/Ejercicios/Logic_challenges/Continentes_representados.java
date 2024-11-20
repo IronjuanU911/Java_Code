@@ -136,13 +136,30 @@ public class Continentes_representados {
         F_System.Output(
         "[1]Añadir desarrollador",
         "[2]Ver lista de desarrolladores",
+        "[3]Verificar si hay un desarrollador por cada continente",
         "[0]Salir",
 
         warning,0);
 
         switch(F_Input.Int_mode()){
-          case 1 -> add_developer();
-          case 2 -> developers_menu(0);
+          case 1 -> add_developer(); 
+          case 2 -> {
+            if (!developer_list.isEmpty()){ //Al presionar 2, primero mira si hay desarrolladores, en caso contrario, lo informa en warning
+              developers_menu(0);
+            } else {
+              _continue = true;
+              warning = "No hay desarrolladores disponibles";
+            }
+          }
+          case 3 -> {
+            if (all_continents_developer_presented()){
+              F_System.Output("Si se presenta un desarrollador por cada continente",9);
+            } else {
+              F_System.Output("Los desarrolladores representan todos los continentes",9);
+            }
+            _continue = true;
+          }
+
           case 0 -> {}
           default -> {
             _continue = true;
@@ -156,11 +173,11 @@ public class Continentes_representados {
 
     public static void developers_menu(int index_developer){
       int developer_list_lenght = developer_list.size();
+      developer developer_selected = developer_list.get(index_developer); //Obtenemos el desarrollador seleccionado del array
 
-      final boolean cant_left = index_developer == 0;
-      final boolean cant_right = index_developer == developer_list_lenght -1;
+      final boolean cant_left = index_developer == 0; //Si el index es 0, al no existir mas a la izquierda, no se podra ir ahi
+      final boolean cant_right = index_developer == developer_list_lenght -1; // Si el index es igual al tamaño de la lista de la lista - 1, significa que no hay mas desarrolladores a la derecha
 
-      developer developer_selected = developer_list.get(index_developer);
 
       int output_mode;
 

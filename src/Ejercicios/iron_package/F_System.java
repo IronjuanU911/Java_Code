@@ -4,6 +4,7 @@ Clase F_Sistem que contiene funciones personalizadas por mi
 
 package iron_package;
 
+import iron_package.F_Input;
 import java.io.IOException;
 
 public class F_System { //Clase que contiene funciones que utiliza este sistema pa que se vea mejor
@@ -41,7 +42,8 @@ public class F_System { //Clase que contiene funciones que utiliza este sistema 
             case 1 -> text_menu = "[Left : a][Right: d]_______________________[Exit: x]";
             case 2 -> text_menu = "[Right: d]_________________________________[Exit: x]";
             case 3 -> text_menu = "[Left: a]__________________________________[Exit: x]";
-            case 4 -> text_menu = "___________________________________________[Exit: x]";
+            case 4 -> text_menu = "[__________________________________________[Exit: x]";
+            case 9 -> text_menu = "[___________Presiona enter para continuar__________]";
             default -> text_menu = "[___________________Code_by_Iron___________________]";
         }
         
@@ -62,6 +64,11 @@ public class F_System { //Clase que contiene funciones que utiliza este sistema 
             + '\n' + text_menu
 
         );
+    
+        if (mode == 9){ //Hacemos que el usuario presione enter a continuar :D
+            F_Input.String_mode();
+        }
+    
     }
 
 }
