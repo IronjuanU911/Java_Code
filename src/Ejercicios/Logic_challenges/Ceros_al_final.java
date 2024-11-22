@@ -66,7 +66,7 @@ public class Ceros_al_final {
         return Output_Array;
     }
 
-    public static void Iterador_Array(ArrayList<String> Input_array){
+    public static void Iterador_ArrayList(ArrayList<String> Input_array){
         Iterator<String> iterador_array = Input_array.iterator(); //Se crea el iterador
 
         System.out.print("[");

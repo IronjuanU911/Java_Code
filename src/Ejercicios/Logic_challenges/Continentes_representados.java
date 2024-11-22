@@ -98,7 +98,7 @@ public class Continentes_representados {
 
     public static boolean all_continents_developer_presented(){
       boolean is_true = true; //Variable que indica si se presenta un desarrollador por cada continente :D
-      String[] remaining_continents = all_continents;
+      String[] remaining_continents = all_continents.clone(); //Creamos un array con la referencia de un clon de all continents
       int remaining_continents_length = remaining_continents.length;
 
       /* 
@@ -112,15 +112,16 @@ public class Continentes_representados {
         for (developer select_developer : developer_list){
           if (select_developer.continent.equals(remaining_continents[i])){
             remaining_continents[i] = ""; //Volverlo vacio. 
+            break;
           }
         }
       }
 
 
       for (String null_text : remaining_continents){ //Comprobamos si todos los elementos en remain_contientes son vacios
-        if (!(null_text.equals(""))){
+        if (!null_text.equals("")){
           is_true = false;
-          break;
+
         }
       }
 
@@ -137,13 +138,14 @@ public class Continentes_representados {
         "[1]Añadir desarrollador",
         "[2]Ver lista de desarrolladores",
         "[3]Verificar si hay un desarrollador por cada continente",
-        "[0]Salir",
+        "[4]Desarrolladores de europa que saben JavaScript",
+        "[5]Lenguajes conocidos por los desarrolladores presentados",
 
-        warning,0);
+        warning,4);
 
-        switch(F_Input.Int_mode()){
-          case 1 -> add_developer(); 
-          case 2 -> {
+        switch(F_Input.String_mode()){
+          case "1" -> add_developer(); 
+          case "2" -> {
             if (!developer_list.isEmpty()){ //Al presionar 2, primero mira si hay desarrolladores, en caso contrario, lo informa en warning
               developers_menu(0);
             } else {
@@ -151,16 +153,21 @@ public class Continentes_representados {
               warning = "No hay desarrolladores disponibles";
             }
           }
-          case 3 -> {
+          case "3" -> {
             if (all_continents_developer_presented()){
               F_System.Output("Si se presenta un desarrollador por cada continente",9);
             } else {
-              F_System.Output("Los desarrolladores representan todos los continentes",9);
+              F_System.Output("Los desarrolladores no representan todos los continentes",9);
             }
             _continue = true;
           }
 
-          case 0 -> {}
+          case "4" -> JavaScript_developers_in_Europe();
+
+          case "5" -> all_languages_presented();
+
+          case "x" -> {} //no hacer nada para que el ciclo termine
+
           default -> {
             _continue = true;
             warning = "Inserte un valor valido";
@@ -168,6 +175,64 @@ public class Continentes_representados {
         }
 
       }
+
+    }
+
+    public static void all_languages_presented(){
+      ArrayList<String> languages_presented = new ArrayList<String>();
+      for (developer select_developer : developer_list){
+        if (!languages_presented.contains(select_developer.language)){ //Recorremos los desarrolladores presentados
+          languages_presented.add(select_developer.language); //Si su lenguaje no se encuentra en la lista, se añade
+        }
+
+      }
+      String languages_presented_text = "[";
+      int languages_presented_lenght = languages_presented.size() - 1; //Obtenemos el tamaño del arraylist (Contando desde 0)
+      for (int i = 0; languages_presented_lenght >= i; i++){
+        languages_presented_text = languages_presented_text + languages_presented.get(i); //Añadimos los lenguages del array al texto, para luego imprimirlo
+        if (languages_presented_lenght > i){ //Si aun faltan lenguajes por añadir en el siguiente ciclo, se pone una coma
+          languages_presented_text = languages_presented_text + ", ";
+        }
+      }
+
+      languages_presented_text = languages_presented_text + "]";
+
+      F_System.Output(
+        "Lista de los lenguajes conocidos por los desarrolladores",
+        languages_presented_text,
+      
+        "",9);
+
+      start_menu();
+
+    }
+
+    public static void JavaScript_developers_in_Europe (){
+      ArrayList<developer> developers_with_condition = new ArrayList<developer>();
+      String name_developers = "[";
+
+      for (developer select_developer : developer_list){
+        if (select_developer.language.equals("JavaScript") && select_developer.continent.equals("Europe")){ //Se recorre cada desarrollador y se mira si cumple con las condiciones necesarias
+          developers_with_condition.add(select_developer); //Si el desarrollador cumple las condiciones, se añade a la lista
+        }
+      }
+
+      int developers_with_condition_lenght = developers_with_condition.size() - 1; //Definimos el tamaño del array para iterarlo (Empezando a contar el tamaño desde 0)
+
+      for (int i = 0; developers_with_condition_lenght >= i; i++){ //Ponemos el nombre y el apellido en name_developers
+        name_developers = name_developers + developers_with_condition.get(i).firstName + " " + developers_with_condition.get(i).lastName;
+        if (developers_with_condition_lenght > i){
+          name_developers = name_developers + ", "; //Si aun quedan desarrolladores por iterar, se pone una coma
+        }
+      }
+      name_developers = name_developers + "]";
+
+      F_System.Output("Lista con los desarrolladores de JavaScript en europa",
+      name_developers,
+
+      "",9);
+
+      start_menu();
 
     }
 
