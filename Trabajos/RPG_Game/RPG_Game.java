@@ -2,145 +2,19 @@
 Un juego RPG
 */
 
-import java.io.IOException;
+package RPG_Game;
+
+import RPG_Game.Content.*;
 import java.util.Random;
 import java.util.Scanner;
-
-class Warrior{
-    String name = "";
-
-    final float healt_recovered = 30f;
-    final float magic_recovered_to_defend = 30.0f;
-    final float special_attack_multipliquer = 7.0f;
-    
-
-    float base_healt;
-    float base_resistance;
-    float base_force;
-    float base_magic;
-    float base_defence;
-
-    float active_defence = 0.5f;
-
-    float healt = 200.0f;
-    float resistance = 10.0f;
-    float force = 30.0f;
-    float magic = 100.0f;
-    float defence = 1.0f;
-
-    Warrior focused;
-    Warrior me;
-
-    public float set_index_difficulty(int _difficulty){
-        final float difficulty_index = 0.2f;
-
-        float index = 0.0f;
-        switch (_difficulty){
-            case 1 ->{
-                index = (float)(1 - difficulty_index);
-            }
-
-            case 2 ->{
-                index = (1.0f);
-            }
-
-            case 3 ->{
-                index = (float)(1 + difficulty_index*2);
-            }
-
-        }
-        return index;
-                
-    }
-
-    public void load(String name_warrior, int _difficulty, Warrior focused, Warrior me){
-        name = name_warrior;
-        
-        base_healt = (float) healt*set_index_difficulty(_difficulty);
-        base_resistance = (float) resistance*set_index_difficulty(_difficulty);
-        base_force = (float) force*set_index_difficulty(_difficulty);
-        base_magic = magic;
-        base_defence = defence;
-
-        healt = base_healt;
-        resistance = base_resistance;
-        force = base_force;
-
-        magic = 0;
-
-        this.focused = focused;
-        this.me = me;
-
-    }
-
-
-    public void start(){
-        defence = base_defence;
-    }
-
-    public void is_attacked(float damage, Warrior attacker){
-        float damage_received;
-        if (damage*defence - resistance/2.0 <= 0){
-            damage_received = 1.0f;
-        } else {
-            damage_received = (float) (damage*defence - resistance/2.0);
-        }
-
-        healt = healt - damage_received;
-
-        RPG_Game.output(attacker.name + " a atacado a " + name ,
-            "Daño recibido = " + damage_received,"","",9);
-
-    }
-
-    public void attack(float damage){
-        
-        focused.is_attacked(damage, me); // Paso por valor (Damage) y paso por referencia (me)
-        magic = magic + 10;
-        RPG_Game.await(1500);
-    }
-
-    public void defend(){
-        defence = active_defence;
-        if (magic + magic_recovered_to_defend > base_magic){
-            magic = base_magic;
-        } else {
-            magic = magic + magic_recovered_to_defend;
-        }
-        
-        RPG_Game.output(name + " se a defendido","","","",9);
-        RPG_Game.await(1500);
-    }
-
-    public void magic(int type_magic){
-        switch (type_magic){
-            case 1 -> {
-                //Curarse
-                healt = healt + healt_recovered;
-                magic = magic - RPG_Game.MAGIC_TO_HEALING;
-                RPG_Game.output(name + " se a curado","","","",9);
-                RPG_Game.await(1500);
-            }
-            case 2 -> {
-                //Ataque especial
-                attack(force*special_attack_multipliquer);
-                magic = magic - RPG_Game.MAGIC_TO_SPECIAL_ATTACK;
-            }
-        }
-        
-        
-    }
-
-
-} // End Warrior
-
 
 public class RPG_Game {
     static Scanner sc = new Scanner(System.in);
     static Random rd = new Random();
-
+    
     static Warrior hero = new Warrior();
     static Warrior villan = new Warrior();
+    
     static short difficulty;
 
     static int[] magic_process = new int[2];
@@ -148,8 +22,8 @@ public class RPG_Game {
     static float[] attack_process = new float[2];
 
 
-    static final int MAGIC_TO_HEALING = 30; //magic_to_healin
-    static final int MAGIC_TO_SPECIAL_ATTACK = 90; //magic_to_special_attack
+    public static final int MAGIC_TO_HEALING = 30; //magic_to_healin
+    public static final int MAGIC_TO_SPECIAL_ATTACK = 90; //magic_to_special_attack
 
     static String hero_name = "";
 
@@ -166,15 +40,15 @@ public class RPG_Game {
     }
 
     public static void start(){
-        clean_terminal();
+        R_System.clean_terminal();
 
-        output("Inserta tu nombre","","","",8);
+        R_System.output("Inserta tu nombre","","","",8);
         hero_name = sc.nextLine();
             
         String warning_ = "";
 
         while (true){
-            output("Inserta el nivel de dificultad ","Facil [1]","Medio [2]","Dificil [3]",warning_,8);
+            R_System.output("Inserta el nivel de dificultad ","Facil [1]","Medio [2]","Dificil [3]",warning_,8);
 
             difficulty = sc.nextShort();
 
@@ -188,79 +62,14 @@ public class RPG_Game {
 
         load_warriors();
 
-        output("Cargando...",9);
-        await(1000);
-        output("Es un dia muy oscuro, de seguro estas muy confundido",9);
-        await(2500);
-        output(hero.name + ", has sido traido aqui para acabar con " + villan.name,0);
+        R_System.output("Cargando...",9);
+        R_System.await(1000);
+        R_System.output("Es un dia muy oscuro, de seguro estas muy confundido",9);
+        R_System.await(2500);
+        R_System.output(hero.name + ", has sido traido aqui para acabar con " + villan.name,0);
 
     }
-    public static void output(String text_1,int state){ //Sobrecarga (Una misma funcion resive diferentes parametros)
-        output(text_1,"","","","",state);
-    }
 
-    public static void output(String text_1,String text_warning,int state){
-        output(text_1,"","","",text_warning,state);
-    }
-
-    public static void output(String text_1,String text_2,String text_warning,int state){
-        output(text_1,text_2,"","",text_warning,state);
-    }
-
-    public static void output(String text_1, String text_2, String text_3, String text_warning, int state){
-        output(text_1,text_2,text_3,"",text_warning,state);
-    }
-
-    public static void output(String text_1, String text_2, String text_3, String text_4,String text_warning, int state){
-        clean_terminal();
-
-        String input_text = "";
-
-        switch (state){
-            case 1 ->
-                input_text = "[Ataque : 1][Defensa : 2][Magia : 3][Estadisticas : 4]";
-
-            case 2 ->
-                input_text = "[Select : 1]________________________________[back : 0]";
-
-            case 3 ->
-                input_text = "[Curarse : 1][Ataque especial : 2]__________[back : 0]";
-
-            case 4 ->
-                input_text = "[Analizar a " + villan.name + " : 1]_____________________[back : 0]";
-
-            case 8 ->
-                input_text = "[____________________________________________________]";
-
-            case 9 ->
-                input_text = "[__________________Espere por favor__________________]";
-
-            case 0 ->
-                input_text = "[____________Presiona enter para continuar___________]";
-
-
-        }
-
-        System.out.println(
-                   "|" + text_1 + 
-            '\n' + "|" + 
-            '\n' + "|" + text_2 +
-            '\n' + "|" + 
-            '\n' + "|" + text_3 + 
-            '\n' + "|" + 
-            '\n' + "|" + text_4 +
-            '\n' + "|" + 
-            '\n' + "|" + 
-            '\n' + "|" + 
-            '\n' + "|" + text_warning + 
-            '\n' + "|" + 
-            '\n' + input_text
-        );
-
-        if (state == 0){
-            enter_to_continue(true,false);
-        }
-    }
 
 
     public static void game(){
@@ -298,7 +107,7 @@ public class RPG_Game {
         }
 
         while (_continue) {
-            output(text_menu,"","",warning,1);
+            R_System.output(text_menu,"","",warning,1);
             switch (sc.nextShort()){
                 case 1 ->
                     _continue = attack_select();
@@ -318,14 +127,10 @@ public class RPG_Game {
                 }
         }
 
-
-
         }
 
 
     }
-
-
 
 
     public static boolean attack_select(){
@@ -335,7 +140,7 @@ public class RPG_Game {
 
         while (_continue) {
             _continue = false;
-            output("Ataque basico hacia tu enemigo","","",warning,2);
+            R_System.output("Ataque basico hacia tu enemigo","","",warning,2);
 
             switch (sc.nextShort()){
                 case 1 -> {
@@ -366,7 +171,7 @@ public class RPG_Game {
 
         while (_continue) {
             _continue = false;
-            output("Defenderte te hara mas resistente ante los ataques",
+            R_System.output("Defenderte te hara mas resistente ante los ataques",
                 "Tambien al descansar, recuperaras magia","",warning,2);
 
             switch (sc.nextShort()){
@@ -398,7 +203,7 @@ public class RPG_Game {
 
         while (_continue) {
             _continue = false;
-            output("Curarse : [Healt +" + hero.healt_recovered + "][Magia - " + MAGIC_TO_HEALING + "]",
+            R_System.output("Curarse : [Healt +" + hero.healt_recovered + "][Magia - " + MAGIC_TO_HEALING + "]",
                 "Ataque especial: [Attack with Force*" + hero.special_attack_multipliquer + "][Magia - " + MAGIC_TO_SPECIAL_ATTACK + "]","",warning,"Magic = " + hero.magic,3);
 
             switch (sc.nextShort()){
@@ -444,7 +249,7 @@ public class RPG_Game {
 
         while (_continue) {
             _continue = false;
-            output(
+            R_System.output(
             "Healt = " + hero.healt + "/" + hero.base_healt + "       " + 
             "Magic = " + hero.magic + "/" + hero.base_magic,
             "Resistance = " + hero.resistance,
@@ -452,9 +257,9 @@ public class RPG_Game {
 
             switch (sc.nextShort()){
                 case 1 -> {
-                    output("Analizando a " + villan.name,"","","",9);
-                    await(1000);
-                    output(
+                    R_System.output("Analizando a " + villan.name,"","","",9);
+                    R_System.await(1000);
+                    R_System.output(
                         "Healt = " + villan.healt + "/" + villan.base_healt + "       " + 
                         "Magic = " + villan.magic + "/" + villan.base_magic,
                         "Resistance = " + villan.resistance,
@@ -493,7 +298,7 @@ public class RPG_Game {
 
     public static void villan_actions(){
         final int range_to_healing = 35;
-        float priority_healing = (float) villan.healt/villan.base_healt*100;
+        float priority_healing = villan.healt/villan.base_healt*100;
 
 
         if (!(output_process_of_healing && output_process_of_attack && output_process_of_special_attack)){
@@ -630,13 +435,13 @@ public class RPG_Game {
 
 
     if (hero.healt <= 0 && villan.healt <= 0){
-        output(hero.name + " a fallecido junto a " + villan.name,"A pesar del sacrificio, el mundo encontrara la paz","","",0);
+        R_System.output(hero.name + " a fallecido junto a " + villan.name,"A pesar del sacrificio, el mundo encontrara la paz","","",0);
         end_game = true;
     } else if (hero.healt <= 0){
-        output(hero.name + " a fallecido","El mundo se estremecera ante el terror de " + villan.name,"","",0);
+        R_System.output(hero.name + " a fallecido","El mundo se estremecera ante el terror de " + villan.name,"","",0);
         end_game = true;
     } else if (villan.healt <= 0){
-        output(villan.name + " a fallecido","lo haz hecho muy bien " + hero.name,"","",0);
+        R_System.output(villan.name + " a fallecido","lo haz hecho muy bien " + hero.name,"","",0);
         end_game = true;
     } else{
         end_game = false;
@@ -646,51 +451,12 @@ public class RPG_Game {
 
     }
 
-
-
-
     public static void load_warriors(){
         hero.load(hero_name, 2, villan, hero);
         villan.load("Cronos", difficulty, hero, villan);
 
 
     }
-
-    public static void enter_to_continue(boolean reset_Scanner,boolean visible_text){
-        if (reset_Scanner){
-            sc.nextLine();
-        }
-        if (visible_text){
-            System.out.println("[Presiona enter para continuar]");
-        }
-        
-        sc.nextLine();
-        //Fin función
-    }
-
-
-// Funciones del sistema
-
-
-    public static void clean_terminal()  {
-        try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor(); //Borrar consola windows
-        } catch (IOException | InterruptedException e) {
-            System.out.print("\033[H\033[2J"); //Borrar consola linux
-            System.out.flush(); 
-        }
-        //Los de mac se pueden joder :D
-    }
-
-    
-
-    public static void await(int time){
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {}
-        //Fin función
-    }
-
 
 
 }
