@@ -21,8 +21,6 @@ public class RPG_Game {
     public static final int MAGIC_TO_HEALING = 30; //magic_to_healin
     public static final int MAGIC_TO_SPECIAL_ATTACK = 90; //magic_to_special_attack
 
-    static String hero_name = "";
-
     public static void main (String[] args) {
         //Inicio algoritmo
         
@@ -36,6 +34,7 @@ public class RPG_Game {
     }
 
     public static void start(){
+        String hero_name = "";
         R_System.clean_terminal();
 
         R_System.output("Inserta tu nombre","","","",8);
@@ -55,8 +54,8 @@ public class RPG_Game {
             }
         }
 
-
-        load_warriors();
+        hero.load(hero_name, 2, villan, hero);
+        villan.load("Cronos", difficulty, hero, villan);
 
         R_System.output("Cargando...",9);
         R_System.await(1000);
@@ -79,6 +78,7 @@ public class RPG_Game {
                 break;
             }
 
+            R_System.clean_terminal();
 
         }
 
@@ -367,13 +367,5 @@ public class RPG_Game {
     return end_game;
 
     }
-
-    public static void load_warriors(){
-        hero.load(hero_name, 2, villan, hero);
-        villan.load("Cronos", difficulty, hero, villan);
-
-
-    }
-
 
 }

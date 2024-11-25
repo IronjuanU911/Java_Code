@@ -1,10 +1,9 @@
 package RPG_Game.Content;
 
+import RPG_Game.Content.R_Input;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class R_System {
-    static Scanner sc = new Scanner(System.in);
     
     public static void output(String text_1,int state){ //Sobrecarga (Una misma funcion resive diferentes parametros)
         output(text_1,"","","","",state);
@@ -69,7 +68,7 @@ public class R_System {
         );
 
         if (state == 0){
-            sc.nextLine();
+            R_Input.String_mode();
         }
     }
 

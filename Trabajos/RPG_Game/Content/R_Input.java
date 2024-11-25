@@ -1,5 +1,6 @@
 package RPG_Game.Content;
 
+import RPG_Game.Content.R_System;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -7,6 +8,7 @@ import java.util.Scanner;
 class Input_exit{
     public static void check_exit(String text) { //Excepcion personalizada para salir del programa
         if (text.equals("exit")){
+            R_System.clean_terminal();
             System.exit(0);
         }
     }
