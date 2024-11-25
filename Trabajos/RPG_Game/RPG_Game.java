@@ -5,21 +5,17 @@ Un juego RPG
 package RPG_Game;
 
 import RPG_Game.Content.*;
-import java.util.Random;
-import java.util.Scanner;
 
 public class RPG_Game {
-    static Scanner sc = new Scanner(System.in);
-    static Random rd = new Random();
     
-    static Warrior hero = new Warrior();
-    static Warrior villan = new Warrior();
+    public static Warrior hero = new Warrior();
+    public static Warrior villan = new Warrior();
     
     static short difficulty;
 
-    static int[] magic_process = new int[2];
-    static boolean[] defend_process = new boolean[2];
-    static float[] attack_process = new float[2];
+    public static int[] magic_process = new int[2];
+    public static boolean[] defend_process = new boolean[2];
+    public static float[] attack_process = new float[2];
 
 
     public static final int MAGIC_TO_HEALING = 30; //magic_to_healin
@@ -43,14 +39,14 @@ public class RPG_Game {
         R_System.clean_terminal();
 
         R_System.output("Inserta tu nombre","","","",8);
-        hero_name = sc.nextLine();
+        hero_name = R_Input.String_mode();
             
         String warning_ = "";
 
         while (true){
             R_System.output("Inserta el nivel de dificultad ","Facil [1]","Medio [2]","Dificil [3]",warning_,8);
 
-            difficulty = sc.nextShort();
+            difficulty = R_Input.Short_mode();
 
             if (difficulty > 0 && difficulty < 4){
                 break;
@@ -75,7 +71,7 @@ public class RPG_Game {
     public static void game(){
 
         while (true){
-            villan_actions();
+            Villan_AI.villan_actions();
 
             menu();
 
@@ -96,19 +92,19 @@ public class RPG_Game {
         String text_menu;
         boolean _continue = true;
 
-        if (output_process_of_attack){
+        if (Villan_AI.output_process_of_attack){
             text_menu = villan.name + " esta preparado";
-        } else if (output_process_of_special_attack){
+        } else if (Villan_AI.output_process_of_special_attack){
             text_menu = villan.name + " parece tramar algo";
-        } else if (output_process_of_healing){
+        } else if (Villan_AI.output_process_of_healing){
             text_menu = villan.name + " se ve herido";
         } else{
             text_menu = villan.name + " se ve precavido";
         }
 
-        while (_continue) {
+        while (_continue) { 
             R_System.output(text_menu,"","",warning,1);
-            switch (sc.nextShort()){
+            switch (R_Input.Short_mode()){
                 case 1 ->
                     _continue = attack_select();
 
@@ -142,7 +138,7 @@ public class RPG_Game {
             _continue = false;
             R_System.output("Ataque basico hacia tu enemigo","","",warning,2);
 
-            switch (sc.nextShort()){
+            switch (R_Input.Short_mode()){
                 case 1 -> {
                     attack_process[0] = hero.force;
                     _return = false;
@@ -174,7 +170,7 @@ public class RPG_Game {
             R_System.output("Defenderte te hara mas resistente ante los ataques",
                 "Tambien al descansar, recuperaras magia","",warning,2);
 
-            switch (sc.nextShort()){
+            switch (R_Input.Short_mode()){
                 case 1 ->{
                     defend_process[0] = true;
                     _return = false;
@@ -206,7 +202,7 @@ public class RPG_Game {
             R_System.output("Curarse : [Healt +" + hero.healt_recovered + "][Magia - " + MAGIC_TO_HEALING + "]",
                 "Ataque especial: [Attack with Force*" + hero.special_attack_multipliquer + "][Magia - " + MAGIC_TO_SPECIAL_ATTACK + "]","",warning,"Magic = " + hero.magic,3);
 
-            switch (sc.nextShort()){
+            switch (R_Input.Short_mode()){
                 case 1 -> {
                     if (hero.magic >= MAGIC_TO_HEALING){
                         magic_process[0] = 1;
@@ -255,7 +251,7 @@ public class RPG_Game {
             "Resistance = " + hero.resistance,
             "Force = " + hero.force,warning,4);
 
-            switch (sc.nextShort()){
+            switch (R_Input.Short_mode()){
                 case 1 -> {
                     R_System.output("Analizando a " + villan.name,"","","",9);
                     R_System.await(1000);
@@ -287,85 +283,6 @@ public class RPG_Game {
     }
 
 // Funciones de iniciacion del juego
-
-    static boolean process_of_healing = false;
-    static boolean process_of_attack = true;
-    static boolean process_of_special_attack = false;
-
-    static boolean output_process_of_healing = false;
-    static boolean output_process_of_attack = true;
-    static boolean output_process_of_special_attack = false;
-
-    public static void villan_actions(){
-        final int range_to_healing = 35;
-        float priority_healing = villan.healt/villan.base_healt*100;
-
-
-        if (!(output_process_of_healing && output_process_of_attack && output_process_of_special_attack)){
-            if (priority_healing <= range_to_healing){
-                process_of_healing = true; 
-            } else {
-                switch (rd.nextInt(2)){
-                    case 1 -> {
-                        process_of_special_attack = true;
-                    }
-
-                    default -> {
-                        process_of_attack = true;
-                    }
-                    
-                }
-            }
-
-
-        }
-
-        if (hero.magic >= MAGIC_TO_SPECIAL_ATTACK){
-            process_of_healing = false;
-            process_of_attack = false;
-            process_of_special_attack = false;
-            if (villan.magic >= MAGIC_TO_SPECIAL_ATTACK){
-                process_of_special_attack = true;
-            }
-        }
-
-        output_process_of_attack = process_of_attack;
-        output_process_of_healing = process_of_healing;
-        output_process_of_special_attack = process_of_special_attack;
-
-        //Start villan actions
-
-        if (process_of_healing){
-            if (villan.magic < MAGIC_TO_HEALING){
-                defend_process[1] = true;
-            }else{
-                magic_process[1] = 1;
-                process_of_healing = false;
-            }
-
-        //End healing
-        }
-
-        else if (process_of_attack){
-            attack_process[1] = villan.force;
-            process_of_attack = false;
-        //End attack
-        }
-
-        else if (process_of_special_attack){
-            if (villan.magic < MAGIC_TO_SPECIAL_ATTACK){
-                defend_process[1] = true;
-            } else {
-                magic_process[1] = 2;
-                process_of_special_attack = false;
-            }
-        //End special attack
-        } else {
-            defend_process[1] = true;
-        } 
-
-    }
-
 
     public static boolean process_actions(){
         int i = -1;
