@@ -27,14 +27,14 @@ public class Ceros_al_final {
 
         for (int i = 1;Elements_array >= i;i++){
             F_System.clean_terminal();
-            System.out.print("El estado actual del array es: "); Iterador_Array(Array);
+            System.out.print("El estado actual del array es: "); Iterador_ArrayList(Array);
             System.out.println("Inserte el elemento numero " + i + " al array");
             Array.add(sc.nextLine());
         }
 
         F_System.clean_terminal();
-        System.out.print("Array ingresado por el usuario: "); Iterador_Array(Array);
-        System.out.print("Array con los 0 al final: "); Iterador_Array(CerosAlFinal(Array));
+        System.out.print("Array ingresado por el usuario: "); Iterador_ArrayList(Array);
+        System.out.print("Array con los 0 al final: "); Iterador_ArrayList(CerosAlFinal(Array));
 
         sc.close();
         //Fin algoritmo
