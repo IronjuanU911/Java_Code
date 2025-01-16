@@ -4,7 +4,6 @@ Clase F_Sistem que contiene funciones personalizadas por mi
 
 package iron_package;
 
-import iron_package.F_Input;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,6 +17,10 @@ public class F_System { //Clase que contiene funciones que utiliza este sistema 
             System.out.flush();
         }
         //Los de mac se pueden joder :D
+    }
+
+    public static void Output(String text_1){
+        Output(text_1,"","", "","","",0);
     }
 
     public static void Output(String text_1, int mode){
